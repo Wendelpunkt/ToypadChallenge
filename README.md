@@ -44,3 +44,4 @@ To build your own sockets, it makes sense to use a round 4x4 brick with an NFC s
 
 * [4x4 Bricks on AliExpress](https://s.click.aliexpress.com/e/_DmvkbjN)
 * [NFC Stickers](https://s.click.aliexpress.com/e/_DkS98Sf)
+* [Alternative Minifigures](https://s.click.aliexpress.com/e/_DClZn5t)
