@@ -1,6 +1,10 @@
 using System.ComponentModel;
+using System.Drawing;
+using System.Net.NetworkInformation;
+using System.Reflection;
 using LegoDimensions;
 using LegoDimensions.Portal;
+using ToypadChallenge.Plugins;
 using Color = LegoDimensions.Color;
 
 namespace ToypadChallenge
@@ -35,7 +39,51 @@ namespace ToypadChallenge
                 emulatorButton.Visible = false;
             }
 
-            _portal.SetColor(Pad.All, Color.Red);
+            var types = Assembly.GetCallingAssembly().GetTypes();
+            foreach (var type in types)
+            {
+                if (!typeof(IPlugin).IsAssignableFrom(type))
+                {
+                    continue;
+                }
+
+                if (type.IsAbstract || type.IsInterface)
+                {
+                    continue;
+                }
+
+                var pluginDescription = type.GetCustomAttribute<PluginDescriptionAttribute>();
+                if (pluginDescription is null)
+                {
+                    continue;
+                }
+
+                var menuItem = new ToolStripMenuItem()
+                {
+                    Text = pluginDescription.Name,
+                    ToolTipText = pluginDescription.Description,
+                    Tag = type
+                };
+
+                menuItem.Click += (s, e) =>
+                {
+                    AddPlugin(pluginDescription, type);
+                };
+
+                pluginItem.DropDownItems.Add(menuItem);
+            }
+        }
+
+        private void AddPlugin(PluginDescriptionAttribute description, Type type)
+        {
+            var plugin = (IPlugin)Activator.CreateInstance(type);
+            plugin.Init(_portal, null);
+
+            var page = new TabPage(description.Name);
+            page.Controls.Add(plugin.Control);
+            plugin.Control.Dock = DockStyle.Fill;
+
+            tabControl1.TabPages.Add(page);
         }
 
         protected override void OnClosing(CancelEventArgs e)

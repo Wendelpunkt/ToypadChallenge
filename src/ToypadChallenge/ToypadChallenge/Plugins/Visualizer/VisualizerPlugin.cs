@@ -17,9 +17,14 @@ namespace ToypadChallenge.Plugins.Visualizer
             _control.Dispose();
         }
 
-        public void Init(ILegoPortal portal)
+        public void Init(ILegoPortal portal, IConfiguration configuration)
         {
             
+        }
+
+        public IConfiguration GetConfiguration()
+        {
+            return null;
         }
 
         public Control Control => _control;

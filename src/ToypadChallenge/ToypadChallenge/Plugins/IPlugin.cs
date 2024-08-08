@@ -11,7 +11,13 @@ namespace ToypadChallenge.Plugins
         /// Initializes the plugin and handover the portal instance
         /// </summary>
         /// <param name="portal">current portal instance</param>
-        void Init(ILegoPortal portal);
+        /// <param name="configuration">current configuration or nul if there is no</param>
+        void Init(ILegoPortal portal, IConfiguration configuration);
+
+        /// <summary>
+        /// Returns the current configuration
+        /// </summary>
+        IConfiguration GetConfiguration();
 
         /// <summary>
         /// Returns the configuration control for the main window
