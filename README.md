@@ -23,6 +23,7 @@ The pad comes with only two small 2x2 connectors on top. If you want to build mo
 ## Important Links
 
 * Repository of the Nuget Package: [LegoDimensions](https://github.com/Ellerbach/LegoDimensions)
+* Discord Server: [AusLiebeZumCode](https://discord.gg/jrKU8sR)
 
 ## Where to Buy
 
