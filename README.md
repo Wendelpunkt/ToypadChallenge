@@ -2,6 +2,15 @@
 
 Join the Toypad Challenge! Create innovative applications using LEGO® Toypads, featuring NFC readers and programmable RGB lighting. This repository contains source code, installation guides, and coding tutorials. Contribute your ideas, explore discussions, and participate in our creative coding community!
 
+## How to Participate
+
+1. **Watch this Repository**: Stay updated by watching this repository to keep track of all new developments and updates.
+2. **Explore and Contribute to Discussions**: Scan the Discussions tab for ideas, upvote the ones you find cool, and share your own ideas with the community.
+3. **Join the Discord Server**: If you need help or want to connect with other participants, join our Discord server for real-time discussions and support.
+4. **Get Your Own Toypad (For Free!)**: If you need a Toypad to participate, contact me on Discord or via email at tom.wendel@wendelpunkt.de to receive one at no cost.
+5. **Activate Your Colleagues**: Encourage your coworkers, user groups, friends, or even your entire company to join the challenge and collaborate on ideas.
+6. **Share Your Findings and Code**: As you develop your project, contribute your code and any insights back to this repository via Pull Requests (PRs) to help others learn and build on your work.
+
 ## The LEGO® Toypad
 
 The LEGO® Toypad was originally delivered with the LEGO® Dimensions game. It is a multi NFC reader/writer with a variety of RGB LED features. The pad has three different areas. On the left and right sides, there are three slots each to detect tags. The middle area has only one slot but can also write to the tag.
