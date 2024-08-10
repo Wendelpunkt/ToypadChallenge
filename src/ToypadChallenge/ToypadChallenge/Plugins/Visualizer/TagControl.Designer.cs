@@ -100,7 +100,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.MenuHighlight;
+            BackColor = Color.FromArgb(64, 64, 64);
+            BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(nameContent);
             Controls.Add(nameLabel);
             Controls.Add(uidContent);
@@ -109,7 +110,7 @@
             Controls.Add(indexLabel);
             Margin = new Padding(10);
             Name = "TagControl";
-            Size = new Size(233, 79);
+            Size = new Size(231, 77);
             ResumeLayout(false);
             PerformLayout();
         }

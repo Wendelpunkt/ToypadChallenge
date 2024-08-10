@@ -77,7 +77,6 @@
             leftFlow.FlowDirection = FlowDirection.TopDown;
             leftFlow.Location = new Point(0, 0);
             leftFlow.Name = "leftFlow";
-            leftFlow.Padding = new Padding(10);
             leftFlow.Size = new Size(335, 192);
             leftFlow.TabIndex = 0;
             leftFlow.WrapContents = false;
@@ -100,7 +99,6 @@
             centerFlow.FlowDirection = FlowDirection.TopDown;
             centerFlow.Location = new Point(0, 0);
             centerFlow.Name = "centerFlow";
-            centerFlow.Padding = new Padding(10);
             centerFlow.Size = new Size(335, 192);
             centerFlow.TabIndex = 0;
             centerFlow.WrapContents = false;
@@ -123,7 +121,6 @@
             rightFlow.FlowDirection = FlowDirection.TopDown;
             rightFlow.Location = new Point(0, 0);
             rightFlow.Name = "rightFlow";
-            rightFlow.Padding = new Padding(10);
             rightFlow.Size = new Size(336, 192);
             rightFlow.TabIndex = 0;
             rightFlow.WrapContents = false;

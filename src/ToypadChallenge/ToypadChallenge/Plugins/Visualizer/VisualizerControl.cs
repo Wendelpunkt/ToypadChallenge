@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Toypad;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ToypadChallenge.Plugins.Visualizer
 {
@@ -42,10 +41,16 @@ namespace ToypadChallenge.Plugins.Visualizer
                 _toypad.TagAdded += ToypadOnTagAdded;
                 _toypad.TagRemoved += ToypadOnTagRemoved;
 
+                // Add already existing tags
                 foreach (var tag in _toypad.Tags)
                 {
                     ToypadOnTagAdded(_toypad, tag);
                 }
+
+                // Bring current color to the panels
+                SetColor(Pad.Left, _toypad.LeftPanel);
+                SetColor(Pad.Center, _toypad.CenterPanel);
+                SetColor(Pad.Right, _toypad.RightPanel);
             }
         }
 
@@ -141,14 +146,58 @@ namespace ToypadChallenge.Plugins.Visualizer
         /// </summary>
         private void ToypadOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            var toypad = sender as IToypad;
+            if (toypad != null)
             {
-                case nameof(IToypad.LeftPanel):
-                    break;
-                case nameof(IToypad.CenterPanel):
-                    break;
-                case nameof(IToypad.RightPanel):
-                    break;
+                switch (e.PropertyName)
+                {
+                    case nameof(IToypad.LeftPanel):
+                        SetColor(Pad.Left, toypad.LeftPanel);
+                        break;
+                    case nameof(IToypad.CenterPanel):
+                        SetColor(Pad.Center, toypad.CenterPanel);
+                        break;
+                    case nameof(IToypad.RightPanel):
+                        SetColor(Pad.Center, toypad.RightPanel);
+                        break;
+                }
+            }
+        }
+
+        private void SetColor(Pad pad, Color color)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() =>
+                {
+                    switch (pad)
+                    {
+                        case Pad.Left:
+                            leftPanel.BackColor = color;
+                            break;
+                        case Pad.Center:
+                            centerPanel.BackColor = color;
+                            break;
+                        case Pad.Right:
+                            rightPanel.BackColor = color;
+                            break;
+                    }
+                });
+            }
+            else
+            {
+                switch (pad)
+                {
+                    case Pad.Left:
+                        leftPanel.BackColor = color;
+                        break;
+                    case Pad.Center:
+                        centerPanel.BackColor = color;
+                        break;
+                    case Pad.Right:
+                        rightPanel.BackColor = color;
+                        break;
+                }
             }
         }
     }
