@@ -1,3 +1,5 @@
+using Toypad;
+
 namespace ToypadChallenge
 {
     internal static class Program
@@ -8,12 +10,12 @@ namespace ToypadChallenge
         [STAThread]
         static void Main()
         {
-            using var portal = LegoDimensions.LegoPortal.GetFirstPortal();
+            using var toypad = new HardwareToypad(LegoDimensions.LegoPortal.GetFirstPortal());
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm(null));
+            Application.Run(new MainForm(toypad));
         }
     }
 }

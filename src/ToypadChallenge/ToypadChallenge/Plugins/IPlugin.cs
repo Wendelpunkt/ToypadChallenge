@@ -1,4 +1,4 @@
-﻿using LegoDimensions;
+﻿using Toypad;
 
 namespace ToypadChallenge.Plugins
 {
@@ -10,14 +10,14 @@ namespace ToypadChallenge.Plugins
         /// <summary>
         /// Initializes the plugin and handover the portal instance
         /// </summary>
-        /// <param name="portal">current portal instance</param>
+        /// <param name="toypad">current toypad instance</param>
         /// <param name="configuration">current configuration or nul if there is no</param>
-        void Init(ILegoPortal portal, IConfiguration configuration);
+        void Init(IToypad toypad, IConfiguration? configuration);
 
         /// <summary>
         /// Returns the current configuration
         /// </summary>
-        IConfiguration GetConfiguration();
+        IConfiguration? GetConfiguration();
 
         /// <summary>
         /// Returns the configuration control for the main window

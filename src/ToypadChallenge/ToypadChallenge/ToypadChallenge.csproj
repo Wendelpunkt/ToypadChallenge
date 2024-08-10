@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LegoDimensions" Version="1.7.0" />
+    <ProjectReference Include="..\Toypad\Toypad.csproj" />
   </ItemGroup>
 
 </Project>

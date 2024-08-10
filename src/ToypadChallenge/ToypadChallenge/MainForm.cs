@@ -1,11 +1,7 @@
 using System.ComponentModel;
-using System.Drawing;
-using System.Net.NetworkInformation;
 using System.Reflection;
-using LegoDimensions;
-using LegoDimensions.Portal;
+using Toypad;
 using ToypadChallenge.Plugins;
-using Color = LegoDimensions.Color;
 
 namespace ToypadChallenge
 {
@@ -13,32 +9,22 @@ namespace ToypadChallenge
     {
         private readonly EmulatorForm? _emulator;
 
-        private readonly ILegoPortal? _portal;
+        private readonly IToypad? _toypad;
 
         public MainForm()
         {
             InitializeComponent();
 
             _emulator = null;
-            _portal = null;
+            _toypad = null;
         }
 
-        public MainForm(ILegoPortal? portal) : this()
+        public MainForm(IToypad portal) : this()
         {
-            if (portal is null)
-            {
-                _emulator = new EmulatorForm();
-                _portal = _emulator;
+            _toypad = portal;
+            emulatorButton.Visible = false;
 
-                emulatorButton.Visible = true;
-            }
-            else
-            {
-                _portal = portal;
-
-                emulatorButton.Visible = false;
-            }
-
+            // Scan for plugins
             var types = Assembly.GetCallingAssembly().GetTypes();
             foreach (var type in types)
             {
@@ -58,7 +44,7 @@ namespace ToypadChallenge
                     continue;
                 }
 
-                var menuItem = new ToolStripMenuItem()
+                var menuItem = new ToolStripMenuItem
                 {
                     Text = pluginDescription.Name,
                     ToolTipText = pluginDescription.Description,
@@ -77,7 +63,7 @@ namespace ToypadChallenge
         private void AddPlugin(PluginDescriptionAttribute description, Type type)
         {
             var plugin = (IPlugin)Activator.CreateInstance(type);
-            plugin.Init(_portal, null);
+            plugin.Init(_toypad, null);
 
             var page = new TabPage(description.Name);
             page.Controls.Add(plugin.Control);
@@ -88,7 +74,6 @@ namespace ToypadChallenge
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            _portal?.SetColor(Pad.All, Color.Black);
             _emulator?.Dispose();
             base.OnClosing(e);
         }
