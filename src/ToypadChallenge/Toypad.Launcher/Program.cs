@@ -1,6 +1,7 @@
 using Toypad;
+using ToypadChallenge;
 
-namespace ToypadChallenge
+namespace Toypad.Launcher
 {
     internal static class Program
     {

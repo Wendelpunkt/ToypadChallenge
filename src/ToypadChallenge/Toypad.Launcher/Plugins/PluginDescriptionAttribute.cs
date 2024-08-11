@@ -1,4 +1,4 @@
-﻿namespace ToypadChallenge.Plugins
+﻿namespace Toypad.Launcher.Plugins
 {
     /// <summary>
     /// Decoration for all kind of plugins for a better discovery

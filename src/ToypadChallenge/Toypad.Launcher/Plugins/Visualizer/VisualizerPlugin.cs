@@ -1,6 +1,7 @@
 ﻿using Toypad;
+using ToypadChallenge.Plugins.Visualizer;
 
-namespace ToypadChallenge.Plugins.Visualizer
+namespace Toypad.Launcher.Plugins.Visualizer
 {
     [PluginDescription("Pad visualizer", "Just shows up the current pad state")]
     internal sealed class VisualizerPlugin : IPlugin

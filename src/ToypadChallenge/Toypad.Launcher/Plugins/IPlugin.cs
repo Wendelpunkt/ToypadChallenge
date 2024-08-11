@@ -1,6 +1,6 @@
 ﻿using Toypad;
 
-namespace ToypadChallenge.Plugins
+namespace Toypad.Launcher.Plugins
 {
     /// <summary>
     /// Base interface for all plugins

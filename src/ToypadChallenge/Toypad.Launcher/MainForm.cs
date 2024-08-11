@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using Toypad;
-using ToypadChallenge.Plugins;
+using Toypad.Launcher.Plugins;
 
 namespace ToypadChallenge
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToypadChallenge.Plugins
+namespace Toypad.Launcher.Plugins
 {
     public interface IConfiguration
     {
