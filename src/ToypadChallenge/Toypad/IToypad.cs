@@ -9,19 +9,19 @@ namespace Toypad
     public interface IToypad : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
-        /// Gets or sets the color of the left panel
+        /// Gets the color of the left panel
         /// </summary>
-        public Color LeftPanel { get; set; }
+        public Color LeftPanel { get; }
 
         /// <summary>
-        /// Gets or sets the color of the center panel
+        /// Gets the color of the center panel
         /// </summary>
-        public Color CenterPanel { get; set; }
+        public Color CenterPanel { get; }
 
         /// <summary>
-        /// Gets or sets the color of the right panel
+        /// Gets the color of the right panel
         /// </summary>
-        public Color RightPanel { get; set; }
+        public Color RightPanel { get; }
 
         /// <summary>
         /// Collection of all present tags
