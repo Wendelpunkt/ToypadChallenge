@@ -10,7 +10,7 @@ namespace Toypad.Launcher
         [STAThread]
         static void Main()
         {
-            using var toypad = Toypad.CreateToypad(false);
+            using var toypad = Toypad.CreateToypad(true);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.

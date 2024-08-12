@@ -23,6 +23,13 @@ namespace Toypad.Launcher
             _toypad = portal;
             emulatorButton.Visible = false;
 
+            // In case we run with an emulator, enable infrastructure
+            if (portal is EmulatorToypad emulatorToypad)
+            {
+                _emulator = new EmulatorForm(emulatorToypad);
+                emulatorButton.Visible = true;
+            }
+
             // Scan for plugins
             var types = Assembly.GetCallingAssembly().GetTypes();
             foreach (var type in types)

@@ -76,6 +76,7 @@
             // emulatorButton
             // 
             emulatorButton.Alignment = ToolStripItemAlignment.Right;
+            emulatorButton.BackColor = Color.FromArgb(192, 64, 0);
             emulatorButton.Name = "emulatorButton";
             emulatorButton.Size = new Size(67, 20);
             emulatorButton.Text = "Emulator";

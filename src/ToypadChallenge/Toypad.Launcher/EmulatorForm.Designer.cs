@@ -30,7 +30,7 @@
         {
             leftPanel = new Panel();
             rightPanel = new Panel();
-            middlePanel = new Panel();
+            centerPanel = new Panel();
             SuspendLayout();
             // 
             // leftPanel
@@ -49,20 +49,20 @@
             rightPanel.Size = new Size(102, 218);
             rightPanel.TabIndex = 1;
             // 
-            // middlePanel
+            // centerPanel
             // 
-            middlePanel.BorderStyle = BorderStyle.FixedSingle;
-            middlePanel.Location = new Point(165, 93);
-            middlePanel.Name = "middlePanel";
-            middlePanel.Size = new Size(102, 109);
-            middlePanel.TabIndex = 1;
+            centerPanel.BorderStyle = BorderStyle.FixedSingle;
+            centerPanel.Location = new Point(165, 93);
+            centerPanel.Name = "centerPanel";
+            centerPanel.Size = new Size(102, 109);
+            centerPanel.TabIndex = 1;
             // 
             // EmulatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(middlePanel);
+            Controls.Add(centerPanel);
             Controls.Add(rightPanel);
             Controls.Add(leftPanel);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
@@ -80,6 +80,6 @@
 
         private Panel leftPanel;
         private Panel rightPanel;
-        private Panel middlePanel;
+        private Panel centerPanel;
     }
 }

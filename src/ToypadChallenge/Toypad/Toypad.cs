@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using LegoDimensions;
 using Color = System.Drawing.Color;
 
 namespace Toypad
@@ -384,6 +385,35 @@ namespace Toypad
             /// Color to set when key frame reached
             /// </summary>
             public Color Color { get; } = color;
+        }
+
+        #endregion
+
+        #region static fabrics
+
+        /// <summary>
+        /// Creates a new toypad. In best case its hardware. But if there is no pad or the emulator flag is set, the result value is an Emulator Instance
+        /// </summary>
+        /// <param name="enforceEmulator">enforce to use the emulator</param>
+        /// <returns>a toypad instance</returns>
+        public static IToypad CreateToypad(bool enforceEmulator = false)
+        {
+            // If flag is set we do not even try to get connected
+            if (enforceEmulator)
+            {
+                return new EmulatorToypad();
+            }
+
+            try
+            {
+                // Try to connect to the first portal. If this fails we fall back to the emulator
+                var portal = LegoPortal.GetFirstPortal();
+                return new HardwareToypad(portal);
+            }
+            catch (Exception)
+            {
+                return new EmulatorToypad();
+            }
         }
 
         #endregion
