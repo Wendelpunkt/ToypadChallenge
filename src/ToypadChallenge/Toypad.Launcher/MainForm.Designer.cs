@@ -44,7 +44,7 @@
             mainMenu.Items.AddRange(new ToolStripItem[] { programToolStripMenuItem, emulatorButton });
             mainMenu.Location = new Point(0, 0);
             mainMenu.Name = "mainMenu";
-            mainMenu.Size = new Size(800, 24);
+            mainMenu.Size = new Size(1184, 24);
             mainMenu.TabIndex = 0;
             mainMenu.Text = "menuStrip1";
             // 
@@ -87,18 +87,19 @@
             tabControl1.Location = new Point(0, 24);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(800, 426);
+            tabControl1.Size = new Size(1184, 577);
             tabControl1.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1184, 601);
             Controls.Add(tabControl1);
             Controls.Add(mainMenu);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = mainMenu;
+            MinimumSize = new Size(1200, 640);
             Name = "MainForm";
             Text = "LEGO Toypad Launcher";
             mainMenu.ResumeLayout(false);

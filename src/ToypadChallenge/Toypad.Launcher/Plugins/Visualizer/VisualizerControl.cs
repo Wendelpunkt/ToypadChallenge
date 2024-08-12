@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
-using Toypad;
 
-namespace ToypadChallenge.Plugins.Visualizer
+namespace Toypad.Launcher.Plugins.Visualizer
 {
     public partial class VisualizerControl : UserControl
     {
@@ -11,6 +10,12 @@ namespace ToypadChallenge.Plugins.Visualizer
         {
             _toypad = null;
             InitializeComponent();
+
+            padPicker.Items.Add(Pad.Left);
+            padPicker.Items.Add(Pad.Center);
+            padPicker.Items.Add(Pad.Right);
+            padPicker.Items.Add(Pad.All);
+            padPicker.SelectedIndex = 3;
         }
 
         /// <summary>
@@ -48,9 +53,9 @@ namespace ToypadChallenge.Plugins.Visualizer
                 }
 
                 // Bring current color to the panels
-                SetColor(Pad.Left, _toypad.LeftPanel);
-                SetColor(Pad.Center, _toypad.CenterPanel);
-                SetColor(Pad.Right, _toypad.RightPanel);
+                SetColor(Pad.Left, _toypad.LeftColor);
+                SetColor(Pad.Center, _toypad.CenterColor);
+                SetColor(Pad.Right, _toypad.RightColor);
             }
         }
 
@@ -146,19 +151,18 @@ namespace ToypadChallenge.Plugins.Visualizer
         /// </summary>
         private void ToypadOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            var toypad = sender as IToypad;
-            if (toypad != null)
+            if (sender is IToypad toypad)
             {
                 switch (e.PropertyName)
                 {
-                    case nameof(IToypad.LeftPanel):
-                        SetColor(Pad.Left, toypad.LeftPanel);
+                    case nameof(IToypad.LeftColor):
+                        SetColor(Pad.Left, toypad.LeftColor);
                         break;
-                    case nameof(IToypad.CenterPanel):
-                        SetColor(Pad.Center, toypad.CenterPanel);
+                    case nameof(IToypad.CenterColor):
+                        SetColor(Pad.Center, toypad.CenterColor);
                         break;
-                    case nameof(IToypad.RightPanel):
-                        SetColor(Pad.Center, toypad.RightPanel);
+                    case nameof(IToypad.RightColor):
+                        SetColor(Pad.Right, toypad.RightColor);
                         break;
                 }
             }
@@ -199,6 +203,76 @@ namespace ToypadChallenge.Plugins.Visualizer
                         break;
                 }
             }
+        }
+
+        private Pad SelectedPad()
+        {
+            switch (padPicker.SelectedIndex)
+            {
+                case 0: return Pad.Left;
+                case 1: return Pad.Center;
+                case 2: return Pad.Right;
+                case 3: return Pad.All;
+                default: throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
+        /// Changes the color of the set color panel
+        /// </summary>
+        private void setPanel_Click(object sender, EventArgs e)
+        {
+            colorDialog.Color = setColorPanel.BackColor;
+            if (colorDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                setColorPanel.BackColor = colorDialog.Color;
+            }
+        }
+
+        /// <summary>
+        /// Changes the color of the flash effect panel
+        /// </summary>
+        private void flashColorPanel_Click(object sender, EventArgs e)
+        {
+            colorDialog.Color = flashColorPanel.BackColor;
+            if (colorDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                flashColorPanel.BackColor = colorDialog.Color;
+            }
+        }
+
+        /// <summary>
+        /// Changes the color of the fade effect panel
+        /// </summary>
+        private void fadeColorPanel_Click(object sender, EventArgs e)
+        {
+            colorDialog.Color = fadeColorPanel.BackColor;
+            if (colorDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                fadeColorPanel.BackColor = colorDialog.Color;
+            }
+        }
+
+        private void setColorButton_Click(object sender, EventArgs e)
+        {
+            _toypad?.SetColor(SelectedPad(), setColorPanel.BackColor);
+        }
+
+        private void flashButton_Click(object sender, EventArgs e)
+        {
+            _toypad?.FlashColor(SelectedPad(),
+                flashColorPanel.BackColor,
+                (byte)flashOnTextbox.Value,
+                (byte)flashOffTextbox.Value,
+                (byte)flashCyclesTextbox.Value);
+        }
+
+        private void fadeButton_Click(object sender, EventArgs e)
+        {
+            _toypad?.FadeColor(SelectedPad(), 
+                fadeColorPanel.BackColor, 
+                (byte)fadeTimeTextbox.Value, 
+                (byte)fadeCycleTextbox.Value);
         }
     }
 }

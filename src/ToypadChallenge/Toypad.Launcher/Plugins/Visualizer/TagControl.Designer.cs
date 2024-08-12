@@ -1,4 +1,4 @@
-﻿namespace ToypadChallenge.Plugins.Visualizer
+﻿namespace Toypad.Launcher.Plugins.Visualizer
 {
     partial class TagControl
     {
@@ -75,6 +75,7 @@
             uidContent.Size = new Size(34, 15);
             uidContent.TabIndex = 3;
             uidContent.Text = "[UID]";
+            uidContent.Click += uidContent_Click;
             // 
             // nameLabel
             // 
@@ -110,7 +111,7 @@
             Controls.Add(indexLabel);
             Margin = new Padding(10);
             Name = "TagControl";
-            Size = new Size(231, 77);
+            Size = new Size(215, 77);
             ResumeLayout(false);
             PerformLayout();
         }

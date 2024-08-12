@@ -11,22 +11,48 @@ namespace Toypad
         /// <summary>
         /// Gets the color of the left panel
         /// </summary>
-        public Color LeftPanel { get; }
+        Color LeftColor { get; }
 
         /// <summary>
         /// Gets the color of the center panel
         /// </summary>
-        public Color CenterPanel { get; }
+        Color CenterColor { get; }
 
         /// <summary>
         /// Gets the color of the right panel
         /// </summary>
-        public Color RightPanel { get; }
+        Color RightColor { get; }
+
+        /// <summary>
+        /// Sets the color of a pad
+        /// </summary>
+        /// <param name="pad">target pads</param>
+        /// <param name="color">color to set</param>
+        void SetColor(Pad pad, Color color);
+
+        /// <summary>
+        /// Flashes with the given color
+        /// </summary>
+        /// <param name="pad">target pads</param>
+        /// <param name="color">color to flash</param>
+        /// <param name="onPhase">length of the on phase in ticks</param>
+        /// <param name="offPhase">length of the off phase in ticks</param>
+        /// <param name="cycles">number of color changes (even numbers end up in the original color, uneven numbers end with the flash color)</param>
+        void FlashColor(Pad pad, Color color, byte onPhase, byte offPhase, byte cycles);
+
+        /// <summary>
+        /// Fades to the given color
+        /// </summary>
+        /// <param name="pad">target pads</param>
+        /// <param name="color">target color</param>
+        /// <param name="time">time to fade</param>
+        /// <param name="cycles">number of color changes (even numbers end up in the original color, uneven numbers end with the flash color)</param>
+        void FadeColor(Pad pad, Color color, byte time, byte cycles);
 
         /// <summary>
         /// Collection of all present tags
         /// </summary>
-        public IReadOnlyCollection<Tag> Tags { get; }
+        IReadOnlyCollection<Tag> Tags { get; }
 
         /// <summary>
         /// Event for added tags

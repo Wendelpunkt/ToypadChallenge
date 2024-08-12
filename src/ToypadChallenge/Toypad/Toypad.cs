@@ -19,58 +19,144 @@ namespace Toypad
         protected Toypad()
         {
             _tags = new List<Tag>();
+            LeftColor = Color.Black;
+            RightColor = Color.Black;
+            CenterColor = Color.Black;
         }
 
         public void Dispose()
         {
+            OnDispose();
         }
 
-        private Color _leftPanel;
+        /// <summary>
+        /// Gets a call on dispose
+        /// </summary>
+        protected abstract void OnDispose();
+
+        private Color _leftColor;
 
         /// <inheritdoc />
-        public Color LeftPanel
+        public Color LeftColor
         {
-            get => _leftPanel;
+            get => _leftColor;
             protected set
             {
-                if (_leftPanel != value)
+                if (_leftColor != value)
                 {
-                    _leftPanel = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LeftPanel)));
+                    _leftColor = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LeftColor)));
                 }
             }
         }
         
-        private Color _centerPanel;
+        private Color _centerColor;
 
         /// <inheritdoc />
-        public Color CenterPanel
+        public Color CenterColor
         {
-            get => _centerPanel;
+            get => _centerColor;
             protected set
             {
-                if (_centerPanel != value)
+                if (_centerColor != value)
                 {
-                    _centerPanel = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CenterPanel)));
+                    _centerColor = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CenterColor)));
                 }
             }
         }
         
-        private Color _rightPanel;
+        private Color _rightColor;
 
         /// <inheritdoc />
-        public Color RightPanel
+        public Color RightColor
         {
-            get => _rightPanel;
+            get => _rightColor;
             protected set
             {
-                if (_rightPanel != value)
+                if (_rightColor != value)
                 {
-                    _rightPanel = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RightPanel)));
+                    _rightColor = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RightColor)));
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public virtual void SetColor(Pad pad, Color color)
+        {
+            if (pad.HasFlag(Pad.Left))
+            {
+                LeftColor = color;
+            }
+
+            if (pad.HasFlag(Pad.Right))
+            {
+                RightColor = color;
+            }
+
+            if (pad.HasFlag(Pad.Center))
+            {
+                CenterColor = color;
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual void FlashColor(Pad pad, Color color, byte onPhase, byte offPhase, byte cycles)
+        {
+
+        }
+
+        /// <inheritdoc />
+        public virtual void FadeColor(Pad pad, Color color, byte time, byte cycles)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds the given tag to the public list
+        /// </summary>
+        /// <param name="tag">tag to add</param>
+        protected void AddTag(Tag tag)
+        {
+            // Add tag and triggers event
+            _tags.Add(tag);
+            TagAdded?.Invoke(this, tag);
+        }
+
+        /// <summary>
+        /// Removes the tag with the given index
+        /// </summary>
+        /// <param name="index">tag index to remove</param>
+        /// <returns>true if the tag was available and was removed</returns>
+        protected bool RemoveTagByIndex(int index)
+        {
+            // Try to identify the target tag
+            var tag = _tags.FirstOrDefault(t => t.Index == index);
+            if (tag is null)
+            {
+                return false;
+            }
+
+            return RemoveTag(tag);
+        }
+
+        /// <summary>
+        /// Removes the given tag from the tag list
+        /// </summary>
+        /// <param name="tag">tag to remove</param>
+        /// <returns>true if the tag was available and was removed</returns>
+        protected bool RemoveTag(Tag tag)
+        {
+            // Try to remove the tag
+            if (_tags.Remove(tag))
+            {
+                // Trigger event
+                TagRemoved?.Invoke(this, tag);
+                return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc />

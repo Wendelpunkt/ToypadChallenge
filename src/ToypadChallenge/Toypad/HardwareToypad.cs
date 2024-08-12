@@ -1,6 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using LegoDimensions;
+﻿using LegoDimensions;
+using LegoDimensions.Portal;
 using Color = System.Drawing.Color;
 
 namespace Toypad
@@ -8,38 +7,119 @@ namespace Toypad
     /// <summary>
     /// Wrapper around an original toypad
     /// </summary>
-    public sealed class HardwareToypad : IToypad
+    public sealed class HardwareToypad : Toypad
     {
         /// <summary>
         /// Local reference to the portal
         /// </summary>
         private readonly LegoPortal _portal;
 
-        /// <summary>
-        /// Internal list of all known tags
-        /// </summary>
-        private readonly ObservableCollection<Tag> _tags;
-
         public HardwareToypad(LegoPortal portal)
         {
             _portal = portal ?? throw new ArgumentNullException(nameof(portal));
             _portal.LegoTagEvent += PortalOnLegoTagEvent;
-            LeftPanel = Color.Black;
-            RightPanel = Color.Black;
-            CenterPanel = Color.Black;
-
-            _tags = new ObservableCollection<Tag>();
 
             // Add already existing tags
             foreach (var tag in _portal.PresentTags)
             {
-                _tags.Add(new Tag(tag.Index, FromPad(tag.Pad), tag.CardUid));
+                AddTag(new Tag(
+                    tag.Index, 
+                    FromInternalPad(tag.Pad), 
+                    tag.CardUid));
             }
         }
 
-        public void Dispose()
+        /// <inheritdoc />
+        protected override void OnDispose()
         {
             _portal.Dispose();
+        }
+
+        /// <inheritdoc />
+        public override void SetColor(Pad pad, Color color)
+        {
+            base.SetColor(pad, color);
+
+            if (pad == Pad.All)
+            {
+                // Special handling for all pads
+                _portal.SetColor(LegoDimensions.Portal.Pad.All, FromExternalColor(color));
+            }
+            else
+            {
+                if (pad.HasFlag(Pad.Left))
+                {
+                    _portal.SetColor(LegoDimensions.Portal.Pad.Left, FromExternalColor(color));
+                }
+
+                if (pad.HasFlag(Pad.Right))
+                {
+                    _portal.SetColor(LegoDimensions.Portal.Pad.Right, FromExternalColor(color));
+                }
+
+                if (pad.HasFlag(Pad.Center))
+                {
+                    _portal.SetColor(LegoDimensions.Portal.Pad.Center, FromExternalColor(color));
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void FlashColor(Pad pad, Color color, byte onPhase, byte offPhase, byte cycles)
+        {
+            base.FlashColor(pad, color, onPhase, offPhase, cycles);
+
+            if (pad == Pad.All)
+            {
+                // Special handling for all pads
+                _portal.Flash(LegoDimensions.Portal.Pad.All, new FlashPad(onPhase, offPhase, cycles, FromExternalColor(color)));
+            }
+            else
+            {
+                if (pad.HasFlag(Pad.Left))
+                {
+                    _portal.Flash(LegoDimensions.Portal.Pad.Left, new FlashPad(onPhase, offPhase, cycles, FromExternalColor(color)));
+                }
+
+                if (pad.HasFlag(Pad.Right))
+                {
+                    _portal.Flash(LegoDimensions.Portal.Pad.Right, new FlashPad(onPhase, offPhase, cycles, FromExternalColor(color)));
+                }
+
+                if (pad.HasFlag(Pad.Center))
+                {
+                    _portal.Flash(LegoDimensions.Portal.Pad.Center, new FlashPad(onPhase, offPhase, cycles, FromExternalColor(color)));
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void FadeColor(Pad pad, Color color, byte time, byte cycles)
+        {
+            base.FadeColor(pad, color, time, cycles);
+
+            if (pad == Pad.All)
+            {
+                // Special handling for all pads
+                _portal.Fade(LegoDimensions.Portal.Pad.All, new FadePad(time, cycles, FromExternalColor(color)));
+            }
+            else
+            {
+                if (pad.HasFlag(Pad.Left))
+                {
+                    _portal.Fade(LegoDimensions.Portal.Pad.Left, new FadePad(time, cycles, FromExternalColor(color)));
+                }
+
+                if (pad.HasFlag(Pad.Right))
+                {
+                    _portal.Fade(LegoDimensions.Portal.Pad.Right, new FadePad(time, cycles, FromExternalColor(color)));
+                }
+
+                if (pad.HasFlag(Pad.Center))
+                {
+                    _portal.Fade(LegoDimensions.Portal.Pad.Center, new FadePad(time, cycles, FromExternalColor(color)));
+                }
+            }
         }
 
         /// <summary>
@@ -49,28 +129,22 @@ namespace Toypad
         {
             if (e.Present)
             {
-                var tag = new Tag(e.Index, FromPad(e.Pad), e.CardUid, e.LegoTag?.Name ?? "");
-                _tags.Add(tag);
-                TagAdded?.Invoke(this, tag);
+                AddTag(new Tag(
+                    e.Index, 
+                    FromInternalPad(e.Pad), 
+                    e.CardUid, 
+                    e.LegoTag?.Name ?? ""));
             }
             else
             {
-                var tag = _tags.FirstOrDefault(t => t.Index == e.Index);
-                if (tag is not null)
-                {
-                    _tags.Remove(tag);
-                    TagRemoved?.Invoke(this, tag);
-                }
+                RemoveTagByIndex(e.Index);
             }
         }
 
         /// <summary>
         /// Translates from internal pad enum to the external one
         /// </summary>
-        /// <param name="pad"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        private Pad FromPad(LegoDimensions.Portal.Pad pad)
+        private Pad FromInternalPad(LegoDimensions.Portal.Pad pad)
         {
             switch (pad)
             {
@@ -85,67 +159,33 @@ namespace Toypad
             }
         }
 
-        private Color _leftPanel;
-
-        /// <inheritdoc />
-        public Color LeftPanel
+        /// <summary>
+        /// Translates from external pad to internal one
+        /// </summary>
+        private LegoDimensions.Portal.Pad FromExternalPad(Pad pad)
         {
-            get => _leftPanel;
-            set
+            switch (pad)
             {
-                if (_leftPanel != value)
-                {
-                    _leftPanel = value;
-                    _portal.SetColor(LegoDimensions.Portal.Pad.Left, LegoDimensions.Color.FromArgb(value.ToArgb()));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LeftPanel)));
-                }
-            }
-        }
-        
-        private Color _centerPanel;
-
-        /// <inheritdoc />
-        public Color CenterPanel
-        {
-            get => _centerPanel;
-            set
-            {
-                if (_centerPanel != value)
-                {
-                    _centerPanel = value;
-                    _portal.SetColor(LegoDimensions.Portal.Pad.Center, LegoDimensions.Color.FromArgb(value.ToArgb()));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CenterPanel)));
-                }
-            }
-        }
-        
-        private Color _rightPanel;
-
-        /// <inheritdoc />
-        public Color RightPanel
-        {
-            get => _rightPanel;
-            set
-            {
-                if (_rightPanel != value)
-                {
-                    _rightPanel = value;
-                    _portal.SetColor(LegoDimensions.Portal.Pad.Right, LegoDimensions.Color.FromArgb(value.ToArgb()));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RightPanel)));
-                }
+                case Pad.Left:
+                    return LegoDimensions.Portal.Pad.Left;
+                case Pad.Center:
+                    return LegoDimensions.Portal.Pad.Center;
+                case Pad.Right:
+                    return LegoDimensions.Portal.Pad.Right;
+                case Pad.All:
+                    return LegoDimensions.Portal.Pad.All;
+                case Pad.None:
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pad), pad, null);
             }
         }
 
-        /// <inheritdoc />
-        public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
-
-        /// <inheritdoc />
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        /// <inheritdoc />
-        public event EventHandler<Tag>? TagAdded;
-
-        /// <inheritdoc />
-        public event EventHandler<Tag>? TagRemoved;
+        /// <summary>
+        /// Converts external color to internal one
+        /// </summary>
+        private LegoDimensions.Color FromExternalColor(Color color)
+        {
+            return LegoDimensions.Color.FromArgb(color.ToArgb());
+        }
     }
 }
