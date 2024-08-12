@@ -160,27 +160,6 @@ namespace Toypad
         }
 
         /// <summary>
-        /// Translates from external pad to internal one
-        /// </summary>
-        private LegoDimensions.Portal.Pad FromExternalPad(Pad pad)
-        {
-            switch (pad)
-            {
-                case Pad.Left:
-                    return LegoDimensions.Portal.Pad.Left;
-                case Pad.Center:
-                    return LegoDimensions.Portal.Pad.Center;
-                case Pad.Right:
-                    return LegoDimensions.Portal.Pad.Right;
-                case Pad.All:
-                    return LegoDimensions.Portal.Pad.All;
-                case Pad.None:
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(pad), pad, null);
-            }
-        }
-
-        /// <summary>
         /// Converts external color to internal one
         /// </summary>
         private LegoDimensions.Color FromExternalColor(Color color)
