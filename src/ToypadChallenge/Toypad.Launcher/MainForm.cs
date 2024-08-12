@@ -1,9 +1,8 @@
 using System.ComponentModel;
 using System.Reflection;
-using Toypad;
 using Toypad.Launcher.Plugins;
 
-namespace ToypadChallenge
+namespace Toypad.Launcher
 {
     public partial class MainForm : Form
     {

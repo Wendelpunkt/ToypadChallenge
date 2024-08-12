@@ -1,4 +1,4 @@
-﻿namespace ToypadChallenge
+﻿namespace Toypad.Launcher
 {
     partial class MainForm
     {
