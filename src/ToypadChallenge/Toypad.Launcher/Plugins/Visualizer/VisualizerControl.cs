@@ -59,6 +59,36 @@ namespace Toypad.Launcher.Plugins.Visualizer
             }
         }
 
+        /// <summary>
+        /// Sets the given configuration for the UI
+        /// </summary>
+        public void SetConfiguration(VisualizerConfiguration configuration)
+        {
+            setColorPanel.BackColor = configuration.SetColor;
+            flashColorPanel.BackColor = configuration.FlashColor;
+            flashOnTextbox.Value = configuration.FlashOn;
+            flashOffTextbox.Value = configuration.FlashOff;
+            flashCyclesTextbox.Value = configuration.FlashCycles;
+            fadeColorPanel.BackColor = configuration.FadeColor;
+            fadeTimeTextbox.Value = configuration.FadeTime;
+            fadeCycleTextbox.Value = configuration.FadeCycles;
+        }
+
+        /// <summary>
+        /// Updates the configuration based on the UI settings
+        /// </summary>
+        public void UpdateConfiguration(VisualizerConfiguration configuration)
+        {
+            configuration.SetColor = setColorPanel.BackColor;
+            configuration.FlashColor = flashColorPanel.BackColor;
+            configuration.FlashOn = (byte)flashOnTextbox.Value;
+            configuration.FlashOff = (byte)flashOffTextbox.Value;
+            configuration.FlashCycles = (byte)flashCyclesTextbox.Value;
+            configuration.FadeColor = fadeColorPanel.BackColor;
+            configuration.FadeTime = (byte)fadeTimeTextbox.Value;
+            configuration.FadeCycles = (byte)fadeCycleTextbox.Value;
+        }
+
         private void ToypadOnTagRemoved(object? sender, Tag tag)
         {
             if (InvokeRequired)

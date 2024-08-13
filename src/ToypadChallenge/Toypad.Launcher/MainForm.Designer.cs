@@ -30,48 +30,38 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             mainMenu = new MenuStrip();
-            programToolStripMenuItem = new ToolStripMenuItem();
-            pluginItem = new ToolStripMenuItem();
-            toolStripMenuItem2 = new ToolStripSeparator();
-            closeToolStripMenuItem = new ToolStripMenuItem();
+            programMenuItem = new ToolStripMenuItem();
+            closeMenuItem = new ToolStripMenuItem();
             emulatorButton = new ToolStripMenuItem();
-            tabControl1 = new TabControl();
+            pluginsMenuItem = new ToolStripMenuItem();
+            createPluginMenuItem = new ToolStripMenuItem();
+            removePluginMenuItem = new ToolStripMenuItem();
+            tabControl = new TabControl();
             mainMenu.SuspendLayout();
             SuspendLayout();
             // 
             // mainMenu
             // 
-            mainMenu.Items.AddRange(new ToolStripItem[] { programToolStripMenuItem, emulatorButton });
+            mainMenu.Items.AddRange(new ToolStripItem[] { programMenuItem, emulatorButton, pluginsMenuItem });
             mainMenu.Location = new Point(0, 0);
             mainMenu.Name = "mainMenu";
             mainMenu.Size = new Size(1184, 24);
             mainMenu.TabIndex = 0;
             mainMenu.Text = "menuStrip1";
             // 
-            // programToolStripMenuItem
+            // programMenuItem
             // 
-            programToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { pluginItem, toolStripMenuItem2, closeToolStripMenuItem });
-            programToolStripMenuItem.Name = "programToolStripMenuItem";
-            programToolStripMenuItem.Size = new Size(65, 20);
-            programToolStripMenuItem.Text = "Program";
+            programMenuItem.DropDownItems.AddRange(new ToolStripItem[] { closeMenuItem });
+            programMenuItem.Name = "programMenuItem";
+            programMenuItem.Size = new Size(65, 20);
+            programMenuItem.Text = "Program";
             // 
-            // pluginItem
+            // closeMenuItem
             // 
-            pluginItem.Name = "pluginItem";
-            pluginItem.Size = new Size(113, 22);
-            pluginItem.Text = "Plugins";
-            // 
-            // toolStripMenuItem2
-            // 
-            toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(110, 6);
-            // 
-            // closeToolStripMenuItem
-            // 
-            closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            closeToolStripMenuItem.Size = new Size(113, 22);
-            closeToolStripMenuItem.Text = "Close";
-            closeToolStripMenuItem.Click += closeToolStripMenuItem_Click;
+            closeMenuItem.Name = "closeMenuItem";
+            closeMenuItem.Size = new Size(103, 22);
+            closeMenuItem.Text = "Close";
+            closeMenuItem.Click += closeToolStripMenuItem_Click;
             // 
             // emulatorButton
             // 
@@ -82,21 +72,43 @@
             emulatorButton.Text = "Emulator";
             emulatorButton.Click += emulatorButton_Click;
             // 
-            // tabControl1
+            // pluginsMenuItem
             // 
-            tabControl1.Dock = DockStyle.Fill;
-            tabControl1.Location = new Point(0, 24);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1184, 577);
-            tabControl1.TabIndex = 1;
+            pluginsMenuItem.DropDownItems.AddRange(new ToolStripItem[] { createPluginMenuItem, removePluginMenuItem });
+            pluginsMenuItem.Name = "pluginsMenuItem";
+            pluginsMenuItem.Size = new Size(58, 20);
+            pluginsMenuItem.Text = "Plugins";
+            // 
+            // createPluginMenuItem
+            // 
+            createPluginMenuItem.Name = "createPluginMenuItem";
+            createPluginMenuItem.Size = new Size(180, 22);
+            createPluginMenuItem.Text = "Create";
+            // 
+            // removePluginMenuItem
+            // 
+            removePluginMenuItem.Enabled = false;
+            removePluginMenuItem.Name = "removePluginMenuItem";
+            removePluginMenuItem.Size = new Size(180, 22);
+            removePluginMenuItem.Text = "Remove";
+            removePluginMenuItem.Click += removePluginMenuItem_Click;
+            // 
+            // tabControl
+            // 
+            tabControl.Dock = DockStyle.Fill;
+            tabControl.Location = new Point(0, 24);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new Size(1184, 577);
+            tabControl.TabIndex = 1;
+            tabControl.SelectedIndexChanged += tabControl_SelectedIndexChanged;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1184, 601);
-            Controls.Add(tabControl1);
+            Controls.Add(tabControl);
             Controls.Add(mainMenu);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = mainMenu;
@@ -112,11 +124,12 @@
         #endregion
 
         private MenuStrip mainMenu;
-        private ToolStripMenuItem programToolStripMenuItem;
-        private ToolStripMenuItem pluginItem;
-        private ToolStripSeparator toolStripMenuItem2;
-        private ToolStripMenuItem closeToolStripMenuItem;
+        private ToolStripMenuItem programMenuItem;
+        private ToolStripMenuItem closeMenuItem;
         private ToolStripMenuItem emulatorButton;
-        private TabControl tabControl1;
+        private TabControl tabControl;
+        private ToolStripMenuItem pluginsMenuItem;
+        private ToolStripMenuItem createPluginMenuItem;
+        private ToolStripMenuItem removePluginMenuItem;
     }
 }

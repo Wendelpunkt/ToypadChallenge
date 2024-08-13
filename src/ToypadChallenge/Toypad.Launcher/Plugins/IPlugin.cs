@@ -1,6 +1,4 @@
-﻿using Toypad;
-
-namespace Toypad.Launcher.Plugins
+﻿namespace Toypad.Launcher.Plugins
 {
     /// <summary>
     /// Base interface for all plugins
@@ -12,12 +10,12 @@ namespace Toypad.Launcher.Plugins
         /// </summary>
         /// <param name="toypad">current toypad instance</param>
         /// <param name="configuration">current configuration or nul if there is no</param>
-        void Init(IToypad toypad, IConfiguration? configuration);
+        void Init(IToypad toypad, string? configuration);
 
         /// <summary>
         /// Returns the current configuration
         /// </summary>
-        IConfiguration? GetConfiguration();
+        string? GetConfiguration();
 
         /// <summary>
         /// Returns the configuration control for the main window

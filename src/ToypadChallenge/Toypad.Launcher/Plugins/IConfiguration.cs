@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Toypad.Launcher.Plugins
+﻿namespace Toypad.Launcher.Plugins
 {
+    /// <summary>
+    /// Base interface for all plugin configuration implementations
+    /// </summary>
     public interface IConfiguration
     {
     }
