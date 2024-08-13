@@ -2,7 +2,7 @@
   "profiles": {
     "Toypad.Launcher": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "emulator"
     }
   }
 }

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Reflection;
+using Toypad.Launcher.Emulator;
 using Toypad.Launcher.Plugins;
 
 namespace Toypad.Launcher
