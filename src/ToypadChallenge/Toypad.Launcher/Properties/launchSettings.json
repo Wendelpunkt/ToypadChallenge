@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Toypad.Launcher": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}
