@@ -23,6 +23,65 @@ namespace Toypad.Launcher.Emulator
             rightPanel.BackColor = _toypad.RightColor;
         }
 
+        /// <summary>
+        /// Configures the emulator based on the given configuration
+        /// </summary>
+        public void SetConfiguration(EmulatorConfiguration configuration)
+        {
+            foreach (var tag in configuration.Tags)
+            {
+                var tagControl = new EmulatorTagControl(tag.Uid.ToArray(), tag.DisplayName);
+                _knownUids.Add(BitConverter.ToString(tagControl.Uid));
+                switch (tag.Pad)
+                {
+                    case Pad.None:
+                        tagFlow.Controls.Add(tagControl);
+                        break;
+                    case Pad.Left:
+                        leftFlow.Controls.Add(tagControl);
+                        _toypad?.AddEmulatedTag(Pad.Left, tag.Uid.ToArray(), tag.DisplayName);
+                        break;
+                    case Pad.Center:
+                        centerFlow.Controls.Add(tagControl);
+                        _toypad?.AddEmulatedTag(Pad.Center, tag.Uid.ToArray(), tag.DisplayName);
+                        break;
+                    case Pad.Right:
+                        rightFlow.Controls.Add(tagControl);
+                        _toypad?.AddEmulatedTag(Pad.Right, tag.Uid.ToArray(), tag.DisplayName);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Collects all emulator configuration infos and returns it as configuration
+        /// </summary>
+        public EmulatorConfiguration GetConfiguration() =>
+            new()
+            {
+                Tags = CollectTags(tagFlow, Pad.None)
+                    .Union(CollectTags(leftFlow, Pad.Left))
+                    .Union(CollectTags(centerFlow, Pad.Center))
+                    .Union(CollectTags(rightFlow, Pad.Right))
+                    .ToList()
+            };
+
+        /// <summary>
+        /// Collects the tags from the given flow control
+        /// </summary>
+        private IEnumerable<Tag> CollectTags(FlowLayoutPanel panel, Pad position)
+        {
+            foreach (var control in panel.Controls)
+            {
+                if (control is not EmulatorTagControl tagControl)
+                {
+                    continue;
+                }
+
+                yield return new Tag(0, position, tagControl.Uid, tagControl.DisplayName);
+            }
+        }
+
         private void ToypadOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (InvokeRequired)
@@ -57,10 +116,8 @@ namespace Toypad.Launcher.Emulator
                     case nameof(IToypad.CenterColor):
                         centerPanel.BackColor = _toypad?.CenterColor ?? Color.Black;
                         break;
-
                 }
             }
-
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -71,12 +128,12 @@ namespace Toypad.Launcher.Emulator
             Hide();
         }
 
-        private void panel1_Paint(object? sender, PaintEventArgs e)
+        private void toypadPanel_Paint(object? sender, PaintEventArgs e)
         {
             using var brush = new SolidBrush(Color.FromArgb(100, 100, 100));
 
             DrawCircles(e.Graphics, brush, 30, 30);
-            DrawCircles(e.Graphics, brush,  toypadPanel.Width - 60, 30);
+            DrawCircles(e.Graphics, brush, toypadPanel.Width - 60, 30);
         }
 
         private void DrawCircles(Graphics g, Brush b, int offsetX, int offsetY)

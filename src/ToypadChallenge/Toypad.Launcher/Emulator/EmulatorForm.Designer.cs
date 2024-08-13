@@ -127,7 +127,7 @@
             toypadPanel.Name = "toypadPanel";
             toypadPanel.Size = new Size(398, 265);
             toypadPanel.TabIndex = 2;
-            toypadPanel.Paint += panel1_Paint;
+            toypadPanel.Paint += toypadPanel_Paint;
             // 
             // tagFlow
             // 

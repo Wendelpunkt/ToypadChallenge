@@ -91,20 +91,26 @@ namespace Toypad.Launcher
             }
         }
 
-        public MainForm(IToypad portal) : this()
+        public MainForm(IToypad toypad) : this()
         {
-            _toypad = portal;
+            _toypad = toypad;
             emulatorButton.Visible = false;
-
-            // In case we run with an emulator, enable infrastructure
-            if (portal is EmulatorToypad emulatorToypad)
-            {
-                _emulator = new EmulatorForm(emulatorToypad);
-                emulatorButton.Visible = true;
-            }
 
             // Load configuration and create ready to go configured plugins
             _appConfiguration = AppConfiguration.Load();
+
+            // In case we run with an emulator, enable infrastructure
+            if (toypad is EmulatorToypad emulatorToypad)
+            {
+                _emulator = new EmulatorForm(emulatorToypad);
+
+                if (_appConfiguration.EmulatorConfiguration is not null)
+                {
+                    _emulator.SetConfiguration(_appConfiguration.EmulatorConfiguration);
+                }
+                
+                emulatorButton.Visible = true;
+            }
 
             // Recreate tabs based on existing configuration
             foreach (var tabConfiguration in _appConfiguration.TabConfigurations)
@@ -156,6 +162,11 @@ namespace Toypad.Launcher
         {
             // Remember the latest selected tab
             _appConfiguration.SelectedTab = tabControl.SelectedIndex;
+
+            if (_emulator is not null)
+            {
+                _appConfiguration.EmulatorConfiguration = _emulator.GetConfiguration();
+            }
 
             // Collect all configurations
             foreach (var tabConfiguration in _appConfiguration.TabConfigurations)
