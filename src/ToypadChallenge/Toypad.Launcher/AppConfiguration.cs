@@ -8,6 +8,16 @@ namespace Toypad.Launcher
     public sealed class AppConfiguration
     {
         /// <summary>
+        /// Name of the subfolder in the configuration path
+        /// </summary>
+        public const string SubfolderName = "Toypad";
+
+        /// <summary>
+        /// Name of the configuration file
+        /// </summary>
+        public const string ConfigurationFileName = "launcher.config";
+
+        /// <summary>
         /// remembers the latest selected tab
         /// </summary>
         public int SelectedTab { get; set; }
@@ -60,7 +70,10 @@ namespace Toypad.Launcher
         /// </summary>
         private static string GetConfigurationPath()
         {
-            return @"d:\temp\launcher.config";
+            // TODO: Think about other platforms then windows
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), SubfolderName);
+            var directory = Directory.CreateDirectory(path);
+            return Path.Combine(directory.FullName, ConfigurationFileName);
         }
 
         #endregion
