@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Toypad.Launcher.Emulator;
 
 namespace Toypad.Launcher
 {
@@ -26,6 +27,11 @@ namespace Toypad.Launcher
         /// Lists up all tab configurations
         /// </summary>
         public List<TabConfiguration> TabConfigurations { get; } = [];
+
+        /// <summary>
+        /// Configuration for the optional emulator
+        /// </summary>
+        public EmulatorConfiguration? EmulatorConfiguration { get; set; }
 
         #region static load and store methods
 
