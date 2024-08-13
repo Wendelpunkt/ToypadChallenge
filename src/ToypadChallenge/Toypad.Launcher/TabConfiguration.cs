@@ -9,11 +9,6 @@ namespace Toypad.Launcher
     public sealed class TabConfiguration
     {
         /// <summary>
-        /// Unique id of this instance
-        /// </summary>
-        public Guid InstanceId { get; set; }
-
-        /// <summary>
         /// Plugins full type name for a later lookup
         /// </summary>
         public string TypeName { get; set; }

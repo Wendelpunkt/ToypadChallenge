@@ -6,6 +6,11 @@
     public sealed class VisualizerConfiguration : IConfiguration
     {
         /// <summary>
+        /// Stores the target pad setting
+        /// </summary>
+        public Pad TargetPads { get; set; }
+
+        /// <summary>
         /// Color for the solid color feature
         /// </summary>
         public Color SetColor { get; set; }

@@ -8,6 +8,11 @@ namespace Toypad.Launcher
     public sealed class AppConfiguration
     {
         /// <summary>
+        /// remembers the latest selected tab
+        /// </summary>
+        public int SelectedTab { get; set; }
+
+        /// <summary>
         /// Lists up all tab configurations
         /// </summary>
         public List<TabConfiguration> TabConfigurations { get; } = [];

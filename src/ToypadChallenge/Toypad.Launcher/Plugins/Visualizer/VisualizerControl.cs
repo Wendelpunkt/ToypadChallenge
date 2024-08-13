@@ -64,6 +64,7 @@ namespace Toypad.Launcher.Plugins.Visualizer
         /// </summary>
         public void SetConfiguration(VisualizerConfiguration configuration)
         {
+            SelectedPad(configuration.TargetPads);
             setColorPanel.BackColor = configuration.SetColor;
             flashColorPanel.BackColor = configuration.FlashColor;
             flashOnTextbox.Value = configuration.FlashOn;
@@ -79,6 +80,7 @@ namespace Toypad.Launcher.Plugins.Visualizer
         /// </summary>
         public void UpdateConfiguration(VisualizerConfiguration configuration)
         {
+            configuration.TargetPads = SelectedPad();
             configuration.SetColor = setColorPanel.BackColor;
             configuration.FlashColor = flashColorPanel.BackColor;
             configuration.FlashOn = (byte)flashOnTextbox.Value;
@@ -247,6 +249,21 @@ namespace Toypad.Launcher.Plugins.Visualizer
             }
         }
 
+        private void SelectedPad(Pad pad)
+        {
+            switch (pad)
+            {
+                case Pad.Left:
+                    padPicker.SelectedIndex = 0; break;
+                case Pad.Center:
+                    padPicker.SelectedIndex = 1; break;
+                case Pad.Right:
+                    padPicker.SelectedIndex = 2; break;
+                case Pad.All:
+                    padPicker.SelectedIndex = 3; break;
+            }
+        }
+
         /// <summary>
         /// Changes the color of the set color panel
         /// </summary>
@@ -299,9 +316,9 @@ namespace Toypad.Launcher.Plugins.Visualizer
 
         private void fadeButton_Click(object sender, EventArgs e)
         {
-            _toypad?.FadeColor(SelectedPad(), 
-                fadeColorPanel.BackColor, 
-                (byte)fadeTimeTextbox.Value, 
+            _toypad?.FadeColor(SelectedPad(),
+                fadeColorPanel.BackColor,
+                (byte)fadeTimeTextbox.Value,
                 (byte)fadeCycleTextbox.Value);
         }
     }

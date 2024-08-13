@@ -27,7 +27,7 @@ namespace Toypad.Launcher
         /// <summary>
         /// Collection of all known plugins
         /// </summary>
-        private readonly List<(PluginDescriptionAttribute description, Type type)> _knownPlugins = new();
+        private readonly List<(PluginDescriptionAttribute description, Type type)> _knownPlugins = [];
 
         public MainForm()
         {
@@ -70,12 +70,11 @@ namespace Toypad.Launcher
                 };
 
                 // Build click event handler
-                menuItem.Click += (s, e) =>
+                menuItem.Click += (_, _) =>
                 {
                     // Create tab configuration
                     var config = new TabConfiguration
                     {
-                        InstanceId = Guid.NewGuid(),
                         TypeName = pluginInformation.type.FullName,
                         Configuration = null,
                         Plugin = null
@@ -118,6 +117,12 @@ namespace Toypad.Launcher
 
                 tabConfiguration.Plugin = CreatePluginInstanceWithPage(information.description, information.type, tabConfiguration.Configuration);
             }
+
+            // Reselect the last selection state of the tab control based on the configuration
+            if (_appConfiguration.SelectedTab > -1 && tabControl.TabPages.Count > _appConfiguration.SelectedTab)
+            {
+                tabControl.SelectedIndex = _appConfiguration.SelectedTab;
+            }
         }
 
         /// <summary>
@@ -148,10 +153,13 @@ namespace Toypad.Launcher
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            // Remember the latest selected tab
+            _appConfiguration.SelectedTab = tabControl.SelectedIndex;
+
             // Collect all configurations
             foreach (var tabConfiguration in _appConfiguration.TabConfigurations)
             {
-                tabConfiguration.Configuration = tabConfiguration.Plugin.GetConfiguration();
+                tabConfiguration.Configuration = tabConfiguration.Plugin?.GetConfiguration();
             }
 
             // Shut down all plugins
