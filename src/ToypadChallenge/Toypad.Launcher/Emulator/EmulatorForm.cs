@@ -263,6 +263,7 @@ namespace Toypad.Launcher.Emulator
             {
                 case Pad.None:
                     tagFlow.Controls.Remove(tag);
+                    _toypad?.RemoveEmulatedTag(tag.Uid);
                     break;
                 case Pad.Left:
                     leftFlow.Controls.Remove(tag);
@@ -284,6 +285,7 @@ namespace Toypad.Launcher.Emulator
             if (target is null)
             {
                 _knownUids.Remove(BitConverter.ToString(tag.Uid));
+                _toypad?.RemoveEmulatedTag(tag.Uid);
                 tag.Dispose();
                 return;
             }
