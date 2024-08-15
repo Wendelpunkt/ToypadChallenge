@@ -46,7 +46,12 @@ namespace Toypad.Launcher.Plugins
         /// <summary>
         /// Local configuration
         /// </summary>
-        protected T? Configuration { get; private set; }
+        protected T Configuration { get; private set; }
+
+        protected Plugin()
+        {
+            Configuration = GetDefaultConfiguration();
+        }
 
         public override void Init(IToypad toypad, string? configurationString)
         {
