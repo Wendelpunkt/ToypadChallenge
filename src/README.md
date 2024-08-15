@@ -1,0 +1,1 @@
+This is the root folder for all toypad based applications. So if you want to create an application which makes no use of the central launcher application, this would be the best place for putting your source files. Just create a folder name - named after your implementation - and place all required files inside.
