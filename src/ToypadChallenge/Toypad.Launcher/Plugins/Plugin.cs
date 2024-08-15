@@ -16,10 +16,19 @@ namespace Toypad.Launcher.Plugins
         public virtual void Init(IToypad toypad, string? configuration)
         {
             Toypad = toypad;
+
+            // Set the actual toypad instance
+            SetToypad(toypad);
         }
 
         /// <inheritdoc />
         public abstract void Dispose();
+
+        /// <summary>
+        /// Gets a call when the toypad was set for the plugin
+        /// </summary>
+        /// <param name="toypad">reference to the toypad</param>
+        protected abstract void SetToypad(IToypad toypad);
 
         /// <inheritdoc />
         public abstract string? GetConfiguration();
