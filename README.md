@@ -11,7 +11,7 @@ Join the Toypad Challenge! Create innovative applications using LEGO® Toypads, 
 5. **Activate Your Colleagues**: Encourage your coworkers, user groups, friends, or even your entire company to join the challenge and collaborate on ideas.
 6. **Share Your Findings and Code**: As you develop your project, contribute your code and any insights back to this repository via Pull Requests (PRs) to help others learn and build on your work.
 
-## The LEGO® Toypad
+## The LEGO® ToypadTest
 
 The LEGO® Toypad was originally delivered with the LEGO® Dimensions game. It is a multi NFC reader/writer with a variety of RGB LED features. The pad has three different areas. On the left and right sides, there are three slots each to detect tags. The middle area has only one slot but can also write to the tag.
 
