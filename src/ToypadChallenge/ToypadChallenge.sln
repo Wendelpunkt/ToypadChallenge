@@ -7,6 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toypad", "Toypad\Toypad.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toypad.Launcher", "Toypad.Launcher\Toypad.Launcher.csproj", "{093AC80F-1C05-478C-B99F-1F06208DC81F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{77BE8640-0B62-4865-9663-2787B50E8C8D}"
+	ProjectSection(SolutionItems) = preProject
+		publish.bat = publish.bat
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toypad.Cli", "Toypad.Cli\Toypad.Cli.csproj", "{D4BEC1FA-A437-416E-821B-6F00CA9A71D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +28,10 @@ Global
 		{093AC80F-1C05-478C-B99F-1F06208DC81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{093AC80F-1C05-478C-B99F-1F06208DC81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{093AC80F-1C05-478C-B99F-1F06208DC81F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4BEC1FA-A437-416E-821B-6F00CA9A71D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4BEC1FA-A437-416E-821B-6F00CA9A71D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4BEC1FA-A437-416E-821B-6F00CA9A71D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4BEC1FA-A437-416E-821B-6F00CA9A71D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
