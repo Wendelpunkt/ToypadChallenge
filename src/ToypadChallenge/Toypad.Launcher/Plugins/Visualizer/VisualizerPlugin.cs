@@ -1,4 +1,5 @@
-﻿namespace Toypad.Launcher.Plugins.Visualizer
+﻿
+namespace Toypad.Launcher.Plugins.Visualizer
 {
     /// <summary>
     /// Plugin to show up the current state of the pad in a visual way
@@ -6,14 +7,19 @@
     [PluginDescription("Pad visualizer", "Just shows up the current pad state")]
     internal sealed class VisualizerPlugin : Plugin<VisualizerConfiguration>
     {
+        /// <summary>
+        /// Local configuration control
+        /// </summary>
         private readonly VisualizerControl _control = new();
-        
+
+        /// <inheritdoc />
         public override void Dispose()
         {
             _control.SetToypad(null);
             _control.Dispose();
         }
 
+        /// <inheritdoc />
         protected override VisualizerConfiguration GetDefaultConfiguration()
         {
             return new VisualizerConfiguration
@@ -29,12 +35,19 @@
             };
         }
 
-        protected override void SetConfiguration(VisualizerConfiguration configuration)
+        /// <inheritdoc />
+        protected override void SetToypad(IToypad toypad)
         {
             _control.SetToypad(Toypad);
+        }
+
+        /// <inheritdoc />
+        protected override void SetConfiguration(VisualizerConfiguration configuration)
+        {
             _control.SetConfiguration(configuration);
         }
 
+        /// <inheritdoc />
         protected override void UpdateConfiguration()
         {
             if (Configuration is null)
@@ -45,7 +58,7 @@
             _control.UpdateConfiguration(Configuration);
         }
 
+        /// <inheritdoc />
         public override Control Control => _control;
-
     }
 }
