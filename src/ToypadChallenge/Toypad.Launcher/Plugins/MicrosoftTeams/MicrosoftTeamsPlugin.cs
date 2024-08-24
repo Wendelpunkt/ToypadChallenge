@@ -29,6 +29,12 @@
         }
 
         /// <inheritdoc />
+        protected override void SetToypad(IToypad toypad)
+        {
+
+        }
+
+        /// <inheritdoc />
         protected override void SetConfiguration(MicrosoftTeamsConfiguration configuration)
         {
             
