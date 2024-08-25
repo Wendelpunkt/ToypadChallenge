@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Toypad\Toypad.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
+
 </Project>
