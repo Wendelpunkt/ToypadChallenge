@@ -6,6 +6,8 @@ namespace Toypad.Launcher.Plugins.LoopStation
 {
     public partial class LoopStationControl : UserControl
     {
+        private LoopStationConfiguration _configuration;
+
         private readonly WaveOutEvent _device;
 
         private readonly LoopMixProvider _mixProvider;
@@ -33,6 +35,35 @@ namespace Toypad.Launcher.Plugins.LoopStation
         {
             // _controller.Stop();
             _device.Stop();
+        }
+
+        public void SetConfiguration(LoopStationConfiguration configuration)
+        {
+            _configuration = configuration;
+
+            cmbPresets.DisplayMember = nameof(LoopStationConfiguration.LoopStationPreset.Name);
+            cmbPresets.Items.Clear();
+            foreach (var preset in _configuration.Presets)
+            {
+                cmbPresets.Items.Add(preset);
+            }
+        }
+
+        private void cmbPresets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnDeletePreset.Enabled = cmbPresets.SelectedItem != null;
+        }
+
+        private void btnNewPreset_Click(object sender, EventArgs e)
+        {
+            using (NewPresetDialog dialog = new NewPresetDialog())
+            {
+                dialog.tbName.Text = "new preset";
+                if (dialog.ShowDialog(this) == DialogResult.OK)
+                {
+
+                }
+            }
         }
     }
 }

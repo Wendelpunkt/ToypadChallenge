@@ -63,6 +63,7 @@
             cmbPresets.Name = "cmbPresets";
             cmbPresets.Size = new Size(242, 40);
             cmbPresets.TabIndex = 2;
+            cmbPresets.SelectedIndexChanged += cmbPresets_SelectedIndexChanged;
             // 
             // btnNewPreset
             // 
@@ -72,9 +73,11 @@
             btnNewPreset.TabIndex = 3;
             btnNewPreset.Text = "New";
             btnNewPreset.UseVisualStyleBackColor = true;
+            btnNewPreset.Click += btnNewPreset_Click;
             // 
             // btnDeletePreset
             // 
+            btnDeletePreset.Enabled = false;
             btnDeletePreset.Location = new Point(587, 220);
             btnDeletePreset.Name = "btnDeletePreset";
             btnDeletePreset.Size = new Size(150, 46);

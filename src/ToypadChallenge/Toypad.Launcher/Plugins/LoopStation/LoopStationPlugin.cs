@@ -40,6 +40,7 @@ namespace Toypad.Launcher.Plugins.LoopStation
         protected override void SetConfiguration(LoopStationConfiguration configuration)
         {
             _configuration = configuration;
+            _control.SetConfiguration(configuration);
         }
 
         protected override void UpdateConfiguration()
