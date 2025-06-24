@@ -36,12 +36,14 @@
             lblFolder = new Label();
             tbName = new TextBox();
             btnBrowse = new Button();
+            btnClean = new Button();
             SuspendLayout();
             // 
             // btnOk
             // 
-            btnOk.Enabled = false;
-            btnOk.Location = new Point(620, 378);
+            btnOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOk.DialogResult = DialogResult.OK;
+            btnOk.Location = new Point(597, 128);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(150, 46);
             btnOk.TabIndex = 0;
@@ -50,7 +52,9 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(451, 378);
+            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnCancel.DialogResult = DialogResult.Cancel;
+            btnCancel.Location = new Point(441, 128);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(150, 46);
             btnCancel.TabIndex = 1;
@@ -60,7 +64,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(34, 47);
+            label1.Location = new Point(12, 15);
             label1.Name = "label1";
             label1.Size = new Size(78, 32);
             label1.TabIndex = 2;
@@ -69,37 +73,54 @@
             // lblSource
             // 
             lblSource.AutoSize = true;
-            lblSource.Location = new Point(34, 116);
+            lblSource.Location = new Point(12, 64);
             lblSource.Name = "lblSource";
-            lblSource.Size = new Size(87, 32);
+            lblSource.Size = new Size(85, 32);
             lblSource.TabIndex = 3;
-            lblSource.Text = "Source";
+            lblSource.Text = "Import";
             // 
             // lblFolder
             // 
-            lblFolder.AutoSize = true;
-            lblFolder.Location = new Point(146, 116);
+            lblFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblFolder.Enabled = false;
+            lblFolder.Location = new Point(114, 64);
             lblFolder.Name = "lblFolder";
-            lblFolder.Size = new Size(78, 32);
+            lblFolder.Size = new Size(477, 32);
             lblFolder.TabIndex = 4;
-            lblFolder.Text = "label3";
+            lblFolder.Text = "No import";
             // 
             // tbName
             // 
-            tbName.Location = new Point(128, 44);
+            tbName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tbName.Location = new Point(114, 12);
             tbName.Name = "tbName";
-            tbName.Size = new Size(407, 39);
+            tbName.Size = new Size(633, 39);
             tbName.TabIndex = 5;
+            tbName.Text = "New Preset";
+            tbName.TextChanged += tbName_TextChanged;
             // 
             // btnBrowse
             // 
-            btnBrowse.Location = new Point(620, 116);
+            btnBrowse.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBrowse.Location = new Point(601, 57);
             btnBrowse.Name = "btnBrowse";
-            btnBrowse.Size = new Size(150, 46);
+            btnBrowse.Size = new Size(70, 46);
             btnBrowse.TabIndex = 6;
             btnBrowse.Text = "...";
             btnBrowse.UseVisualStyleBackColor = true;
             btnBrowse.Click += btnBrowse_Click;
+            // 
+            // btnClean
+            // 
+            btnClean.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnClean.Enabled = false;
+            btnClean.Location = new Point(677, 57);
+            btnClean.Name = "btnClean";
+            btnClean.Size = new Size(70, 46);
+            btnClean.TabIndex = 7;
+            btnClean.Text = "X";
+            btnClean.UseVisualStyleBackColor = true;
+            btnClean.Click += btnClean_Click;
             // 
             // NewPresetDialog
             // 
@@ -107,7 +128,8 @@
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(759, 186);
+            Controls.Add(btnClean);
             Controls.Add(btnBrowse);
             Controls.Add(tbName);
             Controls.Add(lblFolder);
@@ -116,7 +138,9 @@
             Controls.Add(btnCancel);
             Controls.Add(btnOk);
             Name = "NewPresetDialog";
-            Text = "Preset";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            Text = "New Preset";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -131,5 +155,6 @@
         private Button btnBrowse;
         public Label lblFolder;
         public TextBox tbName;
+        private Button btnClean;
     }
 }

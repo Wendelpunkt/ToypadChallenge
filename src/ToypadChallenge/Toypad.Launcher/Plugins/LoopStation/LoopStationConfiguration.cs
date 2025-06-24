@@ -5,6 +5,8 @@
     /// </summary>
     public sealed class LoopStationConfiguration : IConfiguration
     {
+        public Guid? SelectedPreset { get; set; }
+
         public List<LoopStationPreset> Presets { get; set; }
 
         public LoopStationConfiguration()
@@ -14,6 +16,8 @@
 
         public sealed class LoopStationPreset
         {
+            public Guid Id { get; set; }
+
             public string Name { get; set; }
 
             public List<LoopStationSample> Samples { get; set; }
