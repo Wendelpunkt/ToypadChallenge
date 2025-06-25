@@ -50,6 +50,7 @@
             // 
             // btnOk
             // 
+            btnOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnOk.DialogResult = DialogResult.OK;
             btnOk.Location = new Point(1019, 805);
             btnOk.Name = "btnOk";
@@ -113,6 +114,7 @@
             // btnRemove
             // 
             btnRemove.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnRemove.Enabled = false;
             btnRemove.Location = new Point(988, 677);
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(150, 46);
@@ -122,8 +124,10 @@
             // 
             // EditPresetDialog
             // 
+            AcceptButton = btnOk;
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(1337, 863);
             Controls.Add(grpSamples);
             Controls.Add(tbName);

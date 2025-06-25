@@ -83,26 +83,36 @@ namespace Toypad.Launcher.Plugins.LoopStation
 
         private void btnNewPreset_Click(object sender, EventArgs e)
         {
-            using NewPresetDialog dialog = new NewPresetDialog();
-            if (dialog.ShowDialog(this) == DialogResult.OK)
+            using var newDialog = new NewPresetDialog();
+            if (newDialog.ShowDialog(this) == DialogResult.OK)
             {
-                var preset = new LoopStationConfiguration.LoopStationPreset()
+                var preset = new LoopStationConfiguration.LoopStationPreset
                 {
                     Id = Guid.NewGuid(),
-                    Name = dialog.tbName.Text,
+                    Name = newDialog.tbName.Text,
                     Samples = new List<LoopStationConfiguration.LoopStationSample>()
                 };
 
-                if (dialog.lblFolder.Enabled)
+                if (newDialog.lblFolder.Enabled)
                 {
                     // Scan for files
-                    var directory = new DirectoryInfo(dialog.lblFolder.Text);
+                    var directory = new DirectoryInfo(newDialog.lblFolder.Text);
                     foreach (var file in directory.GetFiles("*.wav", SearchOption.AllDirectories))
                     {
                         preset.Samples.Add(new LoopStationConfiguration.LoopStationSample
                         {
                             Filename = file.FullName
                         });
+                    }
+                }
+
+                // Open up editor for changing imported stuff
+                using (var editDialog = new EditPresetDialog(preset))
+                {
+                    if (editDialog.ShowDialog(this) != DialogResult.OK)
+                    {
+                        // If the editor was cancelled, stop here
+                        return;
                     }
                 }
 
@@ -123,6 +133,11 @@ namespace Toypad.Launcher.Plugins.LoopStation
                 cmbPresets.Items.Remove(preset);
                 _configuration.Presets.Remove(preset);
             }
+        }
+
+        private void btnEditPreset_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

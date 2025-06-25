@@ -99,6 +99,7 @@
             btnEditPreset.TabIndex = 5;
             btnEditPreset.Text = "Edit";
             btnEditPreset.UseVisualStyleBackColor = true;
+            btnEditPreset.Click += btnEditPreset_Click;
             // 
             // lblPreset
             // 
