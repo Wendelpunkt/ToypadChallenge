@@ -31,7 +31,13 @@
 
         public sealed class LoopStationSample
         {
+            public string Name { get; set; }
+
             public string Filename { get; set; }
+
+            public Pad Pad { get; set; }
+
+            public byte[]? Token { get; set; }
         }
 
     }

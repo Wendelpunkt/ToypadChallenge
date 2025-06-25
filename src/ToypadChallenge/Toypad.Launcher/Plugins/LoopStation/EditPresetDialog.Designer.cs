@@ -33,9 +33,16 @@
             btnCancel = new Button();
             tbName = new TextBox();
             listSamples = new ListView();
+            colName = new ColumnHeader();
+            colFile = new ColumnHeader();
+            colToken = new ColumnHeader();
             btnAdd = new Button();
             grpSamples = new GroupBox();
+            btnPlay = new Button();
+            btnUnlearn = new Button();
+            btnLearn = new Button();
             btnRemove = new Button();
+            openFileDialog = new OpenFileDialog();
             grpSamples.SuspendLayout();
             SuspendLayout();
             // 
@@ -81,12 +88,30 @@
             // listSamples
             // 
             listSamples.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            listSamples.Columns.AddRange(new ColumnHeader[] { colName, colFile, colToken });
+            listSamples.FullRowSelect = true;
             listSamples.Location = new Point(24, 50);
             listSamples.Name = "listSamples";
             listSamples.Size = new Size(1270, 621);
             listSamples.TabIndex = 4;
             listSamples.UseCompatibleStateImageBehavior = false;
-            listSamples.View = View.List;
+            listSamples.View = View.Details;
+            listSamples.SelectedIndexChanged += listSamples_SelectedIndexChanged;
+            // 
+            // colName
+            // 
+            colName.Text = "Name";
+            colName.Width = 350;
+            // 
+            // colFile
+            // 
+            colFile.Text = "File";
+            colFile.Width = 500;
+            // 
+            // colToken
+            // 
+            colToken.Text = "Token";
+            colToken.Width = 140;
             // 
             // btnAdd
             // 
@@ -97,10 +122,14 @@
             btnAdd.TabIndex = 5;
             btnAdd.Text = "Add";
             btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
             // grpSamples
             // 
             grpSamples.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpSamples.Controls.Add(btnPlay);
+            grpSamples.Controls.Add(btnUnlearn);
+            grpSamples.Controls.Add(btnLearn);
             grpSamples.Controls.Add(btnRemove);
             grpSamples.Controls.Add(listSamples);
             grpSamples.Controls.Add(btnAdd);
@@ -110,6 +139,42 @@
             grpSamples.TabIndex = 6;
             grpSamples.TabStop = false;
             grpSamples.Text = "Samples";
+            // 
+            // btnPlay
+            // 
+            btnPlay.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnPlay.Enabled = false;
+            btnPlay.Location = new Point(24, 677);
+            btnPlay.Name = "btnPlay";
+            btnPlay.Size = new Size(150, 46);
+            btnPlay.TabIndex = 9;
+            btnPlay.Text = "Play";
+            btnPlay.UseVisualStyleBackColor = true;
+            btnPlay.Click += btnPlay_Click;
+            // 
+            // btnUnlearn
+            // 
+            btnUnlearn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnUnlearn.Enabled = false;
+            btnUnlearn.Location = new Point(676, 677);
+            btnUnlearn.Name = "btnUnlearn";
+            btnUnlearn.Size = new Size(150, 46);
+            btnUnlearn.TabIndex = 8;
+            btnUnlearn.Text = "Unbind";
+            btnUnlearn.UseVisualStyleBackColor = true;
+            btnUnlearn.Click += btnUnlearn_Click;
+            // 
+            // btnLearn
+            // 
+            btnLearn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnLearn.Enabled = false;
+            btnLearn.Location = new Point(832, 677);
+            btnLearn.Name = "btnLearn";
+            btnLearn.Size = new Size(150, 46);
+            btnLearn.TabIndex = 7;
+            btnLearn.Text = "Learn";
+            btnLearn.UseVisualStyleBackColor = true;
+            btnLearn.Click += btnLearn_Click;
             // 
             // btnRemove
             // 
@@ -121,6 +186,12 @@
             btnRemove.TabIndex = 6;
             btnRemove.Text = "Remove";
             btnRemove.UseVisualStyleBackColor = true;
+            btnRemove.Click += btnRemove_Click;
+            // 
+            // openFileDialog
+            // 
+            openFileDialog.Filter = "WAV|*.wav";
+            openFileDialog.Multiselect = true;
             // 
             // EditPresetDialog
             // 
@@ -138,6 +209,7 @@
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Edit Preset";
+            FormClosing += EditPresetDialog_FormClosing;
             grpSamples.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -153,5 +225,12 @@
         private Button btnAdd;
         private GroupBox grpSamples;
         private Button btnRemove;
+        private ColumnHeader colName;
+        private ColumnHeader colFile;
+        private ColumnHeader colToken;
+        private Button btnLearn;
+        private Button btnUnlearn;
+        private OpenFileDialog openFileDialog;
+        private Button btnPlay;
     }
 }

@@ -8,6 +8,8 @@ namespace Toypad.Launcher.Plugins.LoopStation
     {
         private LoopStationConfiguration _configuration;
 
+        private IToypad _toypad;
+
         private readonly WaveOutEvent _device;
 
         private readonly LoopMixProvider _mixProvider;
@@ -64,6 +66,11 @@ namespace Toypad.Launcher.Plugins.LoopStation
             }
         }
 
+        public void SetToypad(IToypad toypad)
+        {
+            _toypad = toypad;
+        }
+
         private void cmbPresets_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnDeletePreset.Enabled = cmbPresets.SelectedItem != null;
@@ -101,15 +108,18 @@ namespace Toypad.Launcher.Plugins.LoopStation
                     {
                         preset.Samples.Add(new LoopStationConfiguration.LoopStationSample
                         {
-                            Filename = file.FullName
+                            Name = file.Name,
+                            Filename = file.FullName,
+                            Pad = Pad.None,
+                            Token = null,
                         });
                     }
                 }
 
                 // Open up editor for changing imported stuff
-                using (var editDialog = new EditPresetDialog(preset))
+                using (var editDialog = new EditPresetDialog(_toypad, preset))
                 {
-                    if (editDialog.ShowDialog(this) != DialogResult.OK)
+                    if (editDialog.ShowDialog() != DialogResult.OK)
                     {
                         // If the editor was cancelled, stop here
                         return;
@@ -137,7 +147,16 @@ namespace Toypad.Launcher.Plugins.LoopStation
 
         private void btnEditPreset_Click(object sender, EventArgs e)
         {
-
+            if (cmbPresets.SelectedItem is LoopStationConfiguration.LoopStationPreset preset)
+            {
+                using (EditPresetDialog dialog = new EditPresetDialog(_toypad, preset))
+                {
+                    if (dialog.ShowDialog(this) == DialogResult.OK)
+                    {
+                        // TODO: Apply
+                    }
+                }
+            }
         }
     }
 }

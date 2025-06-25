@@ -28,6 +28,7 @@ namespace Toypad.Launcher.Plugins.LoopStation
 
         protected override void SetToypad(IToypad toypad)
         {
+            _control.SetToypad(toypad);
         }
 
         public override Control Control => _control;
