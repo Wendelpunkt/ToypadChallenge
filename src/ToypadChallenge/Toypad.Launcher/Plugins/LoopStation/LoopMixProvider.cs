@@ -7,7 +7,7 @@ namespace Toypad.Launcher.Plugins.LoopStation
         private readonly List<LoopTrack> _tracks = new();
         private readonly int _channels;
         private readonly int _loopLengthSamples;
-        private long _samplePosition = 0;
+        private long _samplePosition;
 
         public LoopMixProvider(int sampleRate, int channels, int loopLengthSamples)
         {
@@ -16,17 +16,17 @@ namespace Toypad.Launcher.Plugins.LoopStation
             WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
         }
 
-        public LoopMixProvider(string masterTrack)
+        public LoopMixProvider(LoopTrack track)
         {
-            var track = CreateTrack(masterTrack);
             WaveFormat = track.WaveFormat;
             _channels = track.WaveFormat.Channels;
             _loopLengthSamples = track.Samples.Length / track.WaveFormat.Channels;
+            _tracks.Add(track);
         }
 
-        public static LoopTrack CreateTrack(string filename)
+        public static LoopTrack CreateTrack(LoopStationConfiguration.LoopStationSample sample)
         {
-            using var reader = new AudioFileReader(filename);
+            using var reader = new AudioFileReader(sample.Filename);
             var wholeFile = new List<float>();
             var buffer = new float[reader.WaveFormat.SampleRate * reader.WaveFormat.Channels];
 
@@ -36,14 +36,14 @@ namespace Toypad.Launcher.Plugins.LoopStation
                 wholeFile.AddRange(buffer.Take(read));
             }
 
-            return new LoopTrack(wholeFile.ToArray(), reader.WaveFormat);
-
+            return new LoopTrack(sample.Name, wholeFile.ToArray(), reader.WaveFormat, sample.Pad, sample.Token!);
         }
 
-        public void Add(string filename)
+        public LoopTrack Add(LoopStationConfiguration.LoopStationSample sample)
         {
-            var track = CreateTrack(filename);
+            var track = CreateTrack(sample);
             _tracks.Add(track);
+            return track;
         }
 
         public void Add(LoopTrack track)

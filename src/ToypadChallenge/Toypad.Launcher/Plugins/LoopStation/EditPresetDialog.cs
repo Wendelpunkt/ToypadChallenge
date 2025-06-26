@@ -1,4 +1,6 @@
-﻿namespace Toypad.Launcher.Plugins.LoopStation
+﻿using NAudio.Wave;
+
+namespace Toypad.Launcher.Plugins.LoopStation
 {
     public partial class EditPresetDialog : Form
     {
@@ -19,7 +21,7 @@
             ApplyFromPreset();
         }
 
-        public EditPresetDialog(IToypad toypad, LoopStationConfiguration.LoopStationPreset preset)
+        public EditPresetDialog(IToypad? toypad, LoopStationConfiguration.LoopStationPreset preset)
         {
             _preset = preset;
             _toypad = toypad;
@@ -68,6 +70,7 @@
         private void listSamples_SelectedIndexChanged(object sender, EventArgs e)
         {
             StopLearn();
+            StopPlay();
             var hasItems = listSamples.SelectedItems.Count > 0;
             var hasMultipleItems = listSamples.SelectedItems.Count > 1;
             var hasBoundItems = false;
@@ -82,6 +85,7 @@
             btnRemove.Enabled = hasItems;
             btnUnlearn.Enabled = hasBoundItems;
             btnLearn.Enabled = hasItems && !hasMultipleItems && _toypad is not null;
+            btnPlay.Enabled = hasItems && !hasMultipleItems;
         }
 
         private void btnUnlearn_Click(object sender, EventArgs e)
@@ -94,7 +98,7 @@
                     sample.Pad = Pad.None;
                 }
 
-                selectedItem.SubItems[1].Text = nameof(Pad.None);
+                selectedItem.SubItems[2].Text = nameof(Pad.None);
             }
         }
 
@@ -170,7 +174,10 @@
                     sample.Token = e.Uid.ToArray();
                 }
 
-                _targetItem.SubItems[1].Text = e.Pad.ToString();
+                Invoke(() =>
+                {
+                    _targetItem.SubItems[2].Text = e.Pad.ToString();
+                });
             }
 
             StopLearn();
@@ -190,6 +197,9 @@
 
         private void EditPresetDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
+            StopPlay();
+            StopLearn();
+
             if (DialogResult == DialogResult.OK)
             {
                 _preset.Name = tbName.Text;
@@ -206,6 +216,65 @@
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
+            if (_device is null)
+            {
+                if (listSamples.SelectedItems.Count > 0 && listSamples.SelectedItems[0].Tag is LoopStationConfiguration.LoopStationSample sample)
+                {
+                    StartPlay(sample);
+                }
+            }
+            else
+            {
+                StopPlay();
+            }
+        }
+
+        private WaveOutEvent? _device;
+
+        private AudioFileReader? _file;
+
+        private void StartPlay(LoopStationConfiguration.LoopStationSample sample)
+        {
+            StopPlay();
+
+            _device = new WaveOutEvent();
+
+            _file = new AudioFileReader(sample.Filename);
+            _device.Init(_file);
+
+            _device.Play();
+            _device.PlaybackStopped += DeviceOnPlaybackStopped;
+
+            btnPlay.BackColor = Color.LightGreen;
+        }
+
+        private void DeviceOnPlaybackStopped(object? sender, StoppedEventArgs e)
+        {
+            StopPlay();
+        }
+
+        private void StopPlay()
+        {
+            if (_device is not null)
+            {
+                _device.Stop();
+                _device.Dispose();
+                _device = null;
+                _file?.Dispose();
+                _file = null;
+            }
+
+            if (InvokeRequired)
+            {
+                Invoke(() =>
+                {
+                    btnPlay.BackColor = btnAdd.BackColor;
+                });
+            }
+            else
+            {
+                btnPlay.BackColor = btnAdd.BackColor;
+            }
         }
     }
 }

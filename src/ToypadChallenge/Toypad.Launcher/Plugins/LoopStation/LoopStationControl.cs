@@ -6,36 +6,13 @@ namespace Toypad.Launcher.Plugins.LoopStation
 {
     public partial class LoopStationControl : UserControl
     {
-        private LoopStationConfiguration _configuration;
+        private LoopStationConfiguration? _configuration;
 
-        private IToypad _toypad;
-
-        private readonly WaveOutEvent _device;
-
-        private readonly LoopMixProvider _mixProvider;
+        private IToypad? _toypad;
 
         public LoopStationControl()
         {
-            //_device = new WaveOutEvent();
-
-            //_mixProvider = new LoopMixProvider(@"D:\Sounds\Summer House Anthems - ACID WAV\Kit_04_A# (124) Chemistry\PL_SHA_Kit_04_Kick_124.wav");
-            //_mixProvider.Add(@"D:\Sounds\Summer House Anthems - ACID WAV\Kit_04_A# (124) Chemistry\PL_SHA_Kit_04_Clap_124.wav");
-            //_mixProvider.Add(@"D:\Sounds\Summer House Anthems - ACID WAV\Kit_04_A# (124) Chemistry\Dry\PL_SHA_Kit_04_Break_Piano_124_A#_Dry.wav");
-            //_device.Init(_mixProvider);
-
             InitializeComponent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            // _controller.Play();
-            _device.Play();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            // _controller.Stop();
-            _device.Stop();
         }
 
         public void SetConfiguration(LoopStationConfiguration configuration)
@@ -69,6 +46,44 @@ namespace Toypad.Launcher.Plugins.LoopStation
         public void SetToypad(IToypad toypad)
         {
             _toypad = toypad;
+            _toypad.TagAdded += ToypadOnTagAdded;
+            _toypad.TagRemoved += ToypadOnTagRemoved;
+        }
+
+        private void ToypadOnTagRemoved(object? sender, Tag e)
+        {
+            UpdateTags();
+        }
+
+        private void ToypadOnTagAdded(object? sender, Tag e)
+        {
+            UpdateTags();
+        }
+
+        private void UpdateTags()
+        {
+            var tags = _toypad.Tags.ToArray();
+            Invoke(() =>
+            {
+                foreach (ListViewItem item in listTracks.Items)
+                {
+                    if (item.Tag is LoopTrack track)
+                    {
+                        var tag = tags.FirstOrDefault(t => t.Pad == track.Pad && t.Uid.SequenceEqual(track.Token));
+                        if (tag is null)
+                        {
+                            // No tag found. Stop track
+                            track.NextCycleActive = false;
+                            item.BackColor = Color.White;
+                        }
+                        else
+                        {
+                            track.NextCycleActive = true;
+                            item.BackColor = Color.GreenYellow;
+                        }
+                    }
+                }
+            });
         }
 
         private void cmbPresets_SelectedIndexChanged(object sender, EventArgs e)
@@ -77,14 +92,18 @@ namespace Toypad.Launcher.Plugins.LoopStation
             btnEditPreset.Enabled = cmbPresets.SelectedItem != null;
 
             var preset = cmbPresets.SelectedItem as LoopStationConfiguration.LoopStationPreset;
-            _configuration.SelectedPreset = preset?.Id;
+            if (_configuration is not null)
+            {
+                _configuration.SelectedPreset = preset?.Id;
+            }
+
             if (preset is null)
             {
-                // TODO: Unload stuff
+                RemovePreset();
             }
             else
             {
-                // TODO: Load stuff
+                InitPreset(preset);
             }
         }
 
@@ -126,7 +145,8 @@ namespace Toypad.Launcher.Plugins.LoopStation
                     }
                 }
 
-                _configuration.Presets.Add(preset);
+                _configuration?.Presets.Add(preset);
+
                 cmbPresets.Items.Add(preset);
                 cmbPresets.SelectedItem = preset;
             }
@@ -138,10 +158,11 @@ namespace Toypad.Launcher.Plugins.LoopStation
             {
                 // Unselect
                 cmbPresets.SelectedItem = null;
+                RemovePreset();
 
                 // Remove from set
                 cmbPresets.Items.Remove(preset);
-                _configuration.Presets.Remove(preset);
+                _configuration?.Presets.Remove(preset);
             }
         }
 
@@ -149,13 +170,109 @@ namespace Toypad.Launcher.Plugins.LoopStation
         {
             if (cmbPresets.SelectedItem is LoopStationConfiguration.LoopStationPreset preset)
             {
+                Stop();
                 using (EditPresetDialog dialog = new EditPresetDialog(_toypad, preset))
                 {
                     if (dialog.ShowDialog(this) == DialogResult.OK)
                     {
-                        // TODO: Apply
+                        cmbPresets.Items.Remove(preset);
+                        cmbPresets.Items.Add(preset);
+                        cmbPresets.SelectedItem = preset;
                     }
                 }
+            }
+        }
+
+        private WaveOutEvent? _device;
+
+        private LoopMixProvider? _mixProvider;
+
+        private void InitPreset(LoopStationConfiguration.LoopStationPreset preset)
+        {
+            RemovePreset();
+
+            var samples = preset.Samples.Where(s => s.Pad != Pad.None && s.Token != null).ToArray();
+
+            if (!samples.Any())
+            {
+                return;
+            }
+
+            _device = new WaveOutEvent();
+
+            // Initial sample
+            var track = LoopMixProvider.CreateTrack(samples[0]);
+
+            listTracks.Items.Clear();
+            listTracks.Items.Add(new ListViewItem
+            {
+                Text = track.Name,
+                Tag = track
+            });
+
+            _mixProvider = new LoopMixProvider(track);
+
+            for (var i = 1; i < samples.Length; i++)
+            {
+                track = _mixProvider.Add(samples[i]);
+                listTracks.Items.Add(new ListViewItem
+                {
+                    Text = track.Name,
+                    Tag = track
+                });
+            }
+
+            _device.Init(_mixProvider);
+        }
+
+        private void Play()
+        {
+            if (_device is null)
+            {
+                return;
+            }
+
+            _device.Play();
+            btnPlay.BackColor = Color.Chartreuse;
+        }
+
+        private void Stop()
+        {
+            if (_device is null)
+            {
+                return;
+            }
+
+            _device.Stop();
+            btnPlay.BackColor = btnNewPreset.BackColor;
+        }
+
+        private void RemovePreset()
+        {
+            if (_device is not null)
+            {
+                Stop();
+                _device.Dispose();
+                _device = null;
+            }
+
+            listTracks.Items.Clear();
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            if (_device is null)
+            {
+                return;
+            }
+
+            if (_device.PlaybackState == PlaybackState.Playing)
+            {
+                Stop();
+            }
+            else
+            {
+                Play();
             }
         }
     }
