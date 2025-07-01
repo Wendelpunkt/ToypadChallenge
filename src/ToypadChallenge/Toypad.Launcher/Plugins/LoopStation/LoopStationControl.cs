@@ -70,16 +70,34 @@ namespace Toypad.Launcher.Plugins.LoopStation
                     if (item.Tag is LoopTrack track)
                     {
                         var tag = tags.FirstOrDefault(t => t.Pad == track.Pad && t.Uid.SequenceEqual(track.Token));
-                        if (tag is null)
+                        track.NextCycleActive = tag is not null;
+
+                        // Set color
+                        if (track.IsActive)
                         {
-                            // No tag found. Stop track
-                            track.NextCycleActive = false;
-                            item.BackColor = Color.White;
+                            if (track.NextCycleActive)
+                            {
+                                // Track was playing and will be playing in next loop
+                                item.BackColor = Color.LawnGreen;
+                            }
+                            else
+                            {
+                                // Track is playing but not anymore in next loop
+                                item.BackColor = Color.Orange;
+                            }
                         }
                         else
                         {
-                            track.NextCycleActive = true;
-                            item.BackColor = Color.GreenYellow;
+                            if (track.NextCycleActive)
+                            {
+                                // Track is not playing yet but in the next loop
+                                item.BackColor = Color.Yellow;
+                            }
+                            else
+                            {
+                                // Track is silent in both loops
+                                item.BackColor = Color.White;
+                            }
                         }
                     }
                 }
@@ -222,6 +240,8 @@ namespace Toypad.Launcher.Plugins.LoopStation
                 });
             }
 
+            _mixProvider.LoopReached += MixProviderOnLoopReached;
+
             _device.Init(_mixProvider);
         }
 
@@ -249,6 +269,11 @@ namespace Toypad.Launcher.Plugins.LoopStation
 
         private void RemovePreset()
         {
+            if (_mixProvider != null)
+            {
+                _mixProvider.LoopReached -= MixProviderOnLoopReached;
+            }
+
             if (_device is not null)
             {
                 Stop();
@@ -257,6 +282,11 @@ namespace Toypad.Launcher.Plugins.LoopStation
             }
 
             listTracks.Items.Clear();
+        }
+
+        private void MixProviderOnLoopReached()
+        {
+            Invoke(UpdateTags);
         }
 
         private void btnPlay_Click(object sender, EventArgs e)

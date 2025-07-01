@@ -53,12 +53,14 @@ namespace Toypad.Launcher.Plugins.LoopStation
 
         public int Read(float[] buffer, int offset, int count)
         {
+            bool loopReached = false;
             for (var n = 0; n < count; n += _channels)
             {
                 var positionInLoop = (_samplePosition / _channels) % _loopLengthSamples;
 
                 if (positionInLoop == 0)
                 {
+                    loopReached = true;
                     foreach (var t in _tracks)
                     {
                         t.IsActive = t.NextCycleActive;
@@ -86,9 +88,16 @@ namespace Toypad.Launcher.Plugins.LoopStation
                 _samplePosition += _channels;
             }
 
+            if (loopReached)
+            {
+                Task.Run(() => LoopReached.Invoke());
+            }
+
             return count;
         }
 
         public WaveFormat WaveFormat { get; }
+
+        public event Action LoopReached;
     }
 }
