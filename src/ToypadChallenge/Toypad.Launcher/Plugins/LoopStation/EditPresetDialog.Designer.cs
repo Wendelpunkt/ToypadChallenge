@@ -43,6 +43,7 @@
             btnLearn = new Button();
             btnRemove = new Button();
             openFileDialog = new OpenFileDialog();
+            colDuration = new ColumnHeader();
             grpSamples.SuspendLayout();
             SuspendLayout();
             // 
@@ -88,7 +89,7 @@
             // listSamples
             // 
             listSamples.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            listSamples.Columns.AddRange(new ColumnHeader[] { colName, colFile, colToken });
+            listSamples.Columns.AddRange(new ColumnHeader[] { colName, colFile, colToken, colDuration });
             listSamples.FullRowSelect = true;
             listSamples.Location = new Point(24, 50);
             listSamples.Name = "listSamples";
@@ -193,6 +194,11 @@
             openFileDialog.Filter = "WAV|*.wav";
             openFileDialog.Multiselect = true;
             // 
+            // colDuration
+            // 
+            colDuration.Text = "Duration";
+            colDuration.Width = 100;
+            // 
             // EditPresetDialog
             // 
             AcceptButton = btnOk;
@@ -232,5 +238,6 @@
         private Button btnUnlearn;
         private OpenFileDialog openFileDialog;
         private Button btnPlay;
+        private ColumnHeader colDuration;
     }
 }

@@ -43,8 +43,23 @@ namespace Toypad.Launcher.Plugins.LoopStation
                     Text = sample.Name
                 };
 
+
+
                 item.SubItems.Add(sample.Filename);
                 item.SubItems.Add(sample.Pad.ToString());
+
+                try
+                {
+                    using (var reader = new AudioFileReader(sample.Filename))
+                    {
+                        item.SubItems.Add(reader.TotalTime.ToString());
+                    }
+                        
+                }
+                catch
+                {
+                    item.SubItems.Add("unknown");
+                }
 
                 listSamples.Items.Add(item);
             }
