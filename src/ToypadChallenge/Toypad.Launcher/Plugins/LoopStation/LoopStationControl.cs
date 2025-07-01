@@ -63,6 +63,55 @@ namespace Toypad.Launcher.Plugins.LoopStation
         private void UpdateTags()
         {
             var tags = _toypad.Tags.ToArray();
+
+            switch (_toypad.Tags.Count(t => t.Pad == Pad.Center))
+            {
+                case 1:
+                    _toypad.SetColor(Pad.Center, Color.LightGreen);
+                    break;
+                default:
+                    _toypad.SetColor(Pad.Center, Color.Black);
+                    break;
+            }
+
+            switch (_toypad.Tags.Count(t => t.Pad == Pad.Left))
+            {
+                case 1:
+                    _toypad.SetColor(Pad.Left, Color.LightGreen);
+                    break;
+                case 2:
+                    _toypad.SetColor(Pad.Left, Color.Yellow);
+                    break;
+                case 3:
+                    _toypad.SetColor(Pad.Left, Color.Red);
+                    break;
+                case 4:
+                    _toypad.SetColor(Pad.Left, Color.Purple);
+                    break;
+                default:
+                    _toypad.SetColor(Pad.Left, Color.Black);
+                    break;
+            }
+
+            switch (_toypad.Tags.Count(t => t.Pad == Pad.Right))
+            {
+                case 1:
+                    _toypad.SetColor(Pad.Right, Color.LightGreen);
+                    break;
+                case 2:
+                    _toypad.SetColor(Pad.Right, Color.Yellow);
+                    break;
+                case 3:
+                    _toypad.SetColor(Pad.Right, Color.Red);
+                    break;
+                case 4:
+                    _toypad.SetColor(Pad.Right, Color.Purple);
+                    break;
+                default:
+                    _toypad.SetColor(Pad.Right, Color.Black);
+                    break;
+            }
+
             Invoke(() =>
             {
                 foreach (ListViewItem item in listTracks.Items)
